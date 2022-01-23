@@ -1,10 +1,8 @@
 # TileRPG
-Kotlin port of my Unity TileRPG game
+Kotlin port/continuation of my Unity [TileRPG](https://github.com/trainb0y1/TileRPG) game, which was in itself a rewrite of my [first attempt](https://github.com/trainb0y1/TileRPG-Old) at making a 2D sandbox game.
 
 
 A [libGDX](https://libgdx.com/) project generated with [gdx-liftoff](https://github.com/tommyettinger/gdx-liftoff).
-
-This project was generated with a Kotlin project template that includes Kotlin application launchers and [KTX](https://libktx.github.io/) utilities.
 
 ## Gradle
 
