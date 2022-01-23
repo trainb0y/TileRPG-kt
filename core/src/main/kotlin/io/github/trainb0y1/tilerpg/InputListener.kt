@@ -4,7 +4,7 @@ import com.badlogic.gdx.Input
 import com.badlogic.gdx.InputProcessor
 import io.github.trainb0y1.tilerpg.FirstScreen.Companion.camera
 
-class InputListener: InputProcessor {
+class InputListener : InputProcessor {
 	override fun keyDown(keycode: Int): Boolean {
 		when (keycode) {
 			Input.Keys.A -> camera.translate(-5f, 0f)
