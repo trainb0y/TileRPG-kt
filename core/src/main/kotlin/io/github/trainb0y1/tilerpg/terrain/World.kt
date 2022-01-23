@@ -9,4 +9,4 @@ data class World(
 	val amplitude: Int,
 	val wavelength: Int,
 	val heightBonus: Int
-	)
+)

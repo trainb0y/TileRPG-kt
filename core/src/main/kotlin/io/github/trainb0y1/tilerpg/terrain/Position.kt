@@ -12,8 +12,8 @@ import io.github.trainb0y1.tilerpg.terrain.tile.TileType
 data class Position(var x: Float, var y: Float) {
 	constructor(x: Int, y: Int) : this(x.toFloat(), y.toFloat()) // might as well
 
-	operator fun plus(other: Position): Position = Position(x+other.x, y+other.y)
-	operator fun minus(other: Position): Position = Position(x-other.x, y-other.y)
+	operator fun plus(other: Position): Position = Position(x + other.x, y + other.y)
+	operator fun minus(other: Position): Position = Position(x - other.x, y - other.y)
 
 
 	/**
@@ -62,10 +62,11 @@ data class Position(var x: Float, var y: Float) {
 	 * Convenience reference to TerrainHandler.setTile(this, [tileType], [force])
 	 * @see TerrainHandler.setTile
 	 */
-	fun setTile(pos: Position, tileType: TileType, force: Boolean = false): Boolean = TerrainHandler.setTile(this, tileType, force)
+	fun setTile(pos: Position, tileType: TileType, force: Boolean = false): Boolean =
+		TerrainHandler.setTile(this, tileType, force)
 
 	/**
 	 * Self explanatory, if you don't understand it, go visit the hospital
 	 */
-	fun toVector2(): Vector2 = Vector2(x,y)
+	fun toVector2(): Vector2 = Vector2(x, y)
 }

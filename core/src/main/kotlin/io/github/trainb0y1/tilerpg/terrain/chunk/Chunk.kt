@@ -17,6 +17,7 @@ class Chunk(private val size: Int = 16, val origin: Position) {
 	fun contains(pos: Position): Boolean {
 		return containsRelative(toRelativeCoordinates(pos))
 	}
+
 	/**
 	 * @return whether relative position [pos] is contained in this chunk
 	 */
@@ -24,6 +25,7 @@ class Chunk(private val size: Int = 16, val origin: Position) {
 		if (pos.x > size || pos.y > size) return false
 		return true
 	}
+
 	/**
 	 * @return the tile at global coordinates [pos]
 	 */
@@ -31,6 +33,7 @@ class Chunk(private val size: Int = 16, val origin: Position) {
 		if (!contains(pos)) throw PositionNotInChunkException(this, pos)
 		return getRelativeTile(toRelativeCoordinates(pos))
 	}
+
 	/**
 	 * @return the tile at chunk coordinates [pos]
 	 */
@@ -47,6 +50,7 @@ class Chunk(private val size: Int = 16, val origin: Position) {
 		if (!contains(pos)) throw PositionNotInChunkException(this, pos)
 		return setRelativeTile(toRelativeCoordinates(pos), tileType)
 	}
+
 	/**
 	 * Sets the tile at chunk relative coordinates [pos]
 	 * @return true if placing succeeded <- should always be the case
@@ -57,5 +61,5 @@ class Chunk(private val size: Int = 16, val origin: Position) {
 	}
 }
 
-class PositionNotInChunkException(chunk: Chunk, position: Position):
+class PositionNotInChunkException(chunk: Chunk, position: Position) :
 	Exception("Position (${position.x},${position.y}) not is inside the chunk at (${chunk.origin.x},${chunk.origin.y})")

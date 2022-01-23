@@ -1,9 +1,7 @@
 package io.github.trainb0y1.tilerpg.terrain
 
-import com.badlogic.gdx.math.Vector2
 import io.github.trainb0y1.tilerpg.terrain.chunk.Chunk
 import io.github.trainb0y1.tilerpg.terrain.tile.TileType
-import io.github.trainb0y1.tilerpg.toChunkOrigin
 
 /**
  * Manages the terrain; chunks, tile set methods, etc.
@@ -19,7 +17,11 @@ object TerrainHandler {
 	 */
 	fun getChunk(pos: Position, force: Boolean = false): Chunk? {
 		pos.toChunkOrigin()
-		return chunks[pos] ?: if (force) {attemptLoadChunk(pos) ?: createChunk(pos)} else {null}
+		return chunks[pos] ?: if (force) {
+			attemptLoadChunk(pos) ?: createChunk(pos)
+		} else {
+			null
+		}
 	}
 
 	/**
@@ -43,7 +45,7 @@ object TerrainHandler {
 	 * @return the TileType at [pos]
 	 * @param force whether to load/create the chunk if that chunk is not currently loaded
 	 */
-	fun getTile(pos: Position, force: Boolean = false): TileType? = getChunk(pos,force)?.getTile(pos)
+	fun getTile(pos: Position, force: Boolean = false): TileType? = getChunk(pos, force)?.getTile(pos)
 
 	/**
 	 * Set the [tileType] at [pos]

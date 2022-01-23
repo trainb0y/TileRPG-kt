@@ -23,7 +23,7 @@ object ChunkLoader {
 
 		// Save non-visible chunks
 		val chunksToSave = mutableSetOf<Chunk>()
-		TerrainHandler.chunks.forEach{ (pos, chunk) ->
+		TerrainHandler.chunks.forEach { (pos, chunk) ->
 			val oldPos = pos // pos gets modified by clampXY
 			if (pos.clampXY(minPos, maxPos) != oldPos) {
 				chunksToSave.add(chunk)
@@ -35,7 +35,7 @@ object ChunkLoader {
 		for (x in minX.toInt()..maxX.toInt() step TerrainHandler.chunkSize) {
 			for (y in minY.toInt()..maxY.toInt() step TerrainHandler.chunkSize) {
 				// All of these should be loaded
-				TerrainHandler.getChunk(Position(x,y), true) // Force will create/load it for us
+				TerrainHandler.getChunk(Position(x, y), true) // Force will create/load it for us
 			}
 		}
 	}
@@ -46,7 +46,7 @@ object ChunkLoader {
 	fun saveChunks(chunks: MutableSet<Chunk>) {
 		val world = TerrainHandler.world!!.id // name of the world, so we know where to save to
 		// Can we do this async?
-		chunks.forEach{ chunk ->
+		chunks.forEach { chunk ->
 			// Save the chunk to a file
 			// TODO
 		}
