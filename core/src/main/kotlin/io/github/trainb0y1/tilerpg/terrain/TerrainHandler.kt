@@ -10,6 +10,7 @@ import io.github.trainb0y1.tilerpg.terrain.tile.TileType
 object TerrainHandler {
 	val chunks = mutableMapOf<Vector2, Chunk>()
 	val chunkSize = 16
+	var world: World? = null
 
 	/**
 	 * @return the chunk at [pos]
