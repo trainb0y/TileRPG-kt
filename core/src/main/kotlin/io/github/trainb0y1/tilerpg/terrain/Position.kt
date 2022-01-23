@@ -6,7 +6,8 @@ import io.github.trainb0y1.tilerpg.terrain.tile.TileType
 
 /**
  * Holds an x and y value.
- * Created because the number of extension functions on Vector2 was getting ridiculous
+ * Created because the number of extension functions on [Vector2] was getting ridiculous
+ * @see Vector2
  */
 data class Position(var x: Float, var y: Float) {
 	constructor(x: Int, y: Int) : this(x.toFloat(), y.toFloat()) // might as well
@@ -17,10 +18,12 @@ data class Position(var x: Float, var y: Float) {
 
 	/**
 	 * Force round x and y values to be integers
+	 * @return this position for chaining
 	 */
-	fun roundToInt() { // There's probably a better way to do this
+	fun roundToInt(): Position { // There's probably a better way to do this
 		x = x.toInt().toFloat()
 		y = y.toInt().toFloat()
+		return this
 	}
 
 	/**
@@ -34,12 +37,13 @@ data class Position(var x: Float, var y: Float) {
 	}
 
 	/**
-	 * Set this vector to the chunk origin of the chunk that contains its position
+	 * Set this position to the chunk origin of the chunk that contains it
 	 * @return this position for chaining
 	 */
-	fun toChunkOrigin() {
+	fun toChunkOrigin(): Position {
 		x -= x % TerrainHandler.chunkSize
 		y -= y % TerrainHandler.chunkSize
+		return this
 	}
 
 	/**
