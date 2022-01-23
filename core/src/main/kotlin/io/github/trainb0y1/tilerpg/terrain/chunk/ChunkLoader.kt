@@ -1,11 +1,9 @@
 package io.github.trainb0y1.tilerpg.terrain.chunk
 
 import com.badlogic.gdx.graphics.OrthographicCamera
-import com.badlogic.gdx.math.Vector2
-import io.github.trainb0y1.tilerpg.clampXY
-import io.github.trainb0y1.tilerpg.roundToInt
+import io.github.trainb0y1.tilerpg.terrain.Position
 import io.github.trainb0y1.tilerpg.terrain.TerrainHandler
-import io.github.trainb0y1.tilerpg.vector2FromInt
+
 
 object ChunkLoader {
 	/**
@@ -20,8 +18,8 @@ object ChunkLoader {
 		val maxX = (camera.position.x + (camera.viewportWidth / 2)) + bufferSize // feels
 		val minY = (camera.position.y - (camera.viewportWidth / 2)) - bufferSize // very
 		val maxY = (camera.position.y - (camera.viewportWidth / 2)) + bufferSize // bad
-		val minPos = Vector2(minX, minY)
-		val maxPos = Vector2(maxX, maxY)
+		val minPos = Position(minX, minY)
+		val maxPos = Position(maxX, maxY)
 
 		// Save non-visible chunks
 		val chunksToSave = mutableSetOf<Chunk>()
@@ -37,7 +35,7 @@ object ChunkLoader {
 		for (x in minX.toInt()..maxX.toInt() step TerrainHandler.chunkSize) {
 			for (y in minY.toInt()..maxY.toInt() step TerrainHandler.chunkSize) {
 				// All of these should be loaded
-				TerrainHandler.getChunk(vector2FromInt(x,y), true) // Force will create/load it for us
+				TerrainHandler.getChunk(Position(x,y), true) // Force will create/load it for us
 			}
 		}
 	}
@@ -57,7 +55,7 @@ object ChunkLoader {
 	/**
 	 * @return the chunk at [pos] loaded from a file, null if it was never saved
 	 */
-	fun loadChunk(pos: Vector2): Chunk? {
+	fun loadChunk(pos: Position): Chunk? {
 		val chunkOrigin = pos.toChunkOrigin()
 		// TODO
 		return null

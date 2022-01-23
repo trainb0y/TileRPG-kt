@@ -1,43 +1,40 @@
 package io.github.trainb0y1.tilerpg.terrain.chunk
 
-import com.badlogic.gdx.math.Vector2
+import io.github.trainb0y1.tilerpg.terrain.Position
 
 import io.github.trainb0y1.tilerpg.terrain.tile.TileType
 
-// Possible concern: Vector2s can be floats, so tiles can be placed at floats?
-class Chunk(private val size: Int = 16, val origin: Vector2) {
+// Possible concern: Position's values can be floats, so tiles can be placed at floats?
+class Chunk(private val size: Int = 16, val origin: Position) {
 	private val tiles = mutableListOf<MutableList<TileType>>()
 
-	fun toRelativeCoordinates(pos: Vector2): Vector2 {
-		return pos.sub(origin)
-	}
-	fun toGlobalCoordinates(pos: Vector2): Vector2 {
-		return pos.add(origin)
-	}
+	fun toRelativeCoordinates(pos: Position): Position = pos - origin
+	fun toGlobalCoordinates(pos: Position): Position = pos + origin
+
 	/**
 	 * @return whether the global position [pos] is contained in this chunk
 	 */
-	fun contains(pos: Vector2): Boolean {
+	fun contains(pos: Position): Boolean {
 		return containsRelative(toRelativeCoordinates(pos))
 	}
 	/**
 	 * @return whether relative position [pos] is contained in this chunk
 	 */
-	fun containsRelative(pos: Vector2): Boolean {
+	fun containsRelative(pos: Position): Boolean {
 		if (pos.x > size || pos.y > size) return false
 		return true
 	}
 	/**
 	 * @return the tile at global coordinates [pos]
 	 */
-	fun getTile(pos: Vector2): TileType? {
+	fun getTile(pos: Position): TileType? {
 		if (!contains(pos)) throw PositionNotInChunkException(this, pos)
 		return getRelativeTile(toRelativeCoordinates(pos))
 	}
 	/**
 	 * @return the tile at chunk coordinates [pos]
 	 */
-	fun getRelativeTile(pos: Vector2): TileType? {
+	fun getRelativeTile(pos: Position): TileType? {
 		return tiles[pos.x.toInt()][pos.y.toInt()]
 	}
 
@@ -46,7 +43,7 @@ class Chunk(private val size: Int = 16, val origin: Vector2) {
 	 * @throws PositionNotInChunkException if this chunk does not contain [pos]
 	 * @return true if placing succeeded
 	 */
-	fun setTile(pos: Vector2, tileType: TileType): Boolean {
+	fun setTile(pos: Position, tileType: TileType): Boolean {
 		if (!contains(pos)) throw PositionNotInChunkException(this, pos)
 		return setRelativeTile(toRelativeCoordinates(pos), tileType)
 	}
@@ -54,11 +51,11 @@ class Chunk(private val size: Int = 16, val origin: Vector2) {
 	 * Sets the tile at chunk relative coordinates [pos]
 	 * @return true if placing succeeded <- should always be the case
 	 */
-	fun setRelativeTile(pos: Vector2, tileType: TileType): Boolean {
+	fun setRelativeTile(pos: Position, tileType: TileType): Boolean {
 		tiles[pos.x.toInt()][pos.y.toInt()] = tileType
 		return true
 	}
 }
 
-class PositionNotInChunkException(chunk: Chunk, position: Vector2):
+class PositionNotInChunkException(chunk: Chunk, position: Position):
 	Exception("Position (${position.x},${position.y}) not is inside the chunk at (${chunk.origin.x},${chunk.origin.y})")
