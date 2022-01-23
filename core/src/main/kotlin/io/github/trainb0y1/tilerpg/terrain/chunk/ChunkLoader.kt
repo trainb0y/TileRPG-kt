@@ -15,6 +15,7 @@ object ChunkLoader {
 	 * Save [chunks] to a file
 	 */
 	fun saveChunks(chunks: MutableSet<Chunk>) {
+		// Can we do this async?
 		chunks.forEach{ chunk ->
 			// Save the chunk to a file
 			TODO()
