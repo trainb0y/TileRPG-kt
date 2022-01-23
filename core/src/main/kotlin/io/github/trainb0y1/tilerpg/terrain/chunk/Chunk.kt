@@ -15,21 +15,27 @@ class Chunk(private val size: Int = 16, val origin: Vector2) {
 		return pos.add(origin)
 	}
 	/**
-	 * @return whether [x], [y] is contained in this chunk
+	 * @return whether the global position [pos] is contained in this chunk
 	 */
-	fun inChunk(pos: Vector2): Boolean {
+	fun contains(pos: Vector2): Boolean {
+		return containsRelative(toRelativeCoordinates(pos))
+	}
+	/**
+	 * @return whether relative position [pos] is contained in this chunk
+	 */
+	fun containsRelative(pos: Vector2): Boolean {
 		if (pos.x > size || pos.y > size) return false
 		return true
 	}
 	/**
-	 * @return the tile at global coordinates [x],[y]
+	 * @return the tile at global coordinates [pos]
 	 */
 	fun getTile(pos: Vector2): TileType? {
-		if (!inChunk(pos)) throw PositionNotInChunkException(this, pos)
+		if (!contains(pos)) throw PositionNotInChunkException(this, pos)
 		return getRelativeTile(toRelativeCoordinates(pos))
 	}
 	/**
-	 * @return the tile at chunk coordinates [x],[y]
+	 * @return the tile at chunk coordinates [pos]
 	 */
 	fun getRelativeTile(pos: Vector2): TileType? {
 		return tiles[pos.x.toInt()][pos.y.toInt()]
@@ -41,7 +47,7 @@ class Chunk(private val size: Int = 16, val origin: Vector2) {
 	 * @return true if placing succeeded
 	 */
 	fun setTile(pos: Vector2, tileType: TileType): Boolean {
-		if (!inChunk(pos)) throw PositionNotInChunkException(this, pos)
+		if (!contains(pos)) throw PositionNotInChunkException(this, pos)
 		return setRelativeTile(toRelativeCoordinates(pos), tileType)
 	}
 	/**

@@ -4,6 +4,9 @@ import com.badlogic.gdx.math.Vector2
 import io.github.trainb0y1.tilerpg.terrain.chunk.Chunk
 import io.github.trainb0y1.tilerpg.terrain.tile.TileType
 
+/**
+ * Manages the terrain; chunks, tile set methods, etc.
+ */
 object TerrainHandler {
 	val chunks = mutableMapOf<Vector2, Chunk>()
 	val chunkSize = 16
@@ -49,5 +52,3 @@ object TerrainHandler {
 	fun setTile(pos: Vector2, tileType: TileType, force: Boolean = false): Boolean =
 		getChunk(pos, force)?.setTile(pos, tileType) ?: false
 }
-
-fun vector2FromInt(x: Int, y: Int): Vector2 = Vector2(x.toFloat(), y.toFloat())
