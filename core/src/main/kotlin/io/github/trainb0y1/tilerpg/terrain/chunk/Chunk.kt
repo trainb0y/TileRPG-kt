@@ -1,12 +1,13 @@
 package io.github.trainb0y1.tilerpg.terrain.chunk
 
 import io.github.trainb0y1.tilerpg.terrain.Position
+import io.github.trainb0y1.tilerpg.terrain.tile.TileData
 
 import io.github.trainb0y1.tilerpg.terrain.tile.TileType
 
 // Possible concern: Position's values can be floats, so tiles can be placed at floats?
 class Chunk(private val size: Int = 16, val origin: Position) {
-	private val tiles = mutableListOf<MutableList<TileType>>()
+	private val tiles = mutableListOf<MutableList<TileData>>()
 
 	fun toRelativeCoordinates(pos: Position): Position = pos - origin
 	fun toGlobalCoordinates(pos: Position): Position = pos + origin
@@ -29,7 +30,7 @@ class Chunk(private val size: Int = 16, val origin: Position) {
 	/**
 	 * @return the tile at global coordinates [pos]
 	 */
-	fun getTile(pos: Position): TileType? {
+	fun getTile(pos: Position): TileData? {
 		if (!contains(pos)) throw PositionNotInChunkException(this, pos)
 		return getRelativeTile(toRelativeCoordinates(pos))
 	}
@@ -37,7 +38,7 @@ class Chunk(private val size: Int = 16, val origin: Position) {
 	/**
 	 * @return the tile at chunk coordinates [pos]
 	 */
-	fun getRelativeTile(pos: Position): TileType? {
+	fun getRelativeTile(pos: Position): TileData? {
 		return tiles[pos.x.toInt()][pos.y.toInt()]
 	}
 
@@ -46,17 +47,17 @@ class Chunk(private val size: Int = 16, val origin: Position) {
 	 * @throws PositionNotInChunkException if this chunk does not contain [pos]
 	 * @return true if placing succeeded
 	 */
-	fun setTile(pos: Position, tileType: TileType): Boolean {
+	fun setTile(pos: Position, tile: TileData): Boolean {
 		if (!contains(pos)) throw PositionNotInChunkException(this, pos)
-		return setRelativeTile(toRelativeCoordinates(pos), tileType)
+		return setRelativeTile(toRelativeCoordinates(pos), tile)
 	}
 
 	/**
 	 * Sets the tile at chunk relative coordinates [pos]
 	 * @return true if placing succeeded <- should always be the case
 	 */
-	fun setRelativeTile(pos: Position, tileType: TileType): Boolean {
-		tiles[pos.x.toInt()][pos.y.toInt()] = tileType
+	fun setRelativeTile(pos: Position, tile: TileData): Boolean {
+		tiles[pos.x.toInt()][pos.y.toInt()] = tile
 		return true
 	}
 }

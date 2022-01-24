@@ -42,7 +42,7 @@ class MainMenuScreen(val game: TileRPG) : KtxScreen {
 		button.addListener(object : ChangeListener() {
 			override fun changed(event: ChangeEvent, actor: Actor) {
 				if (nameField.text != "") {
-					game.addScreen(GameScreen(World(nameField.text.replace(" ","_", true), Random.nextInt(3000), 10, 20, 30)))
+					game.addScreen(GameScreen(nameField.text.replace(" ","_", true)))
 					game.setScreen<GameScreen>()
 				}
 			}

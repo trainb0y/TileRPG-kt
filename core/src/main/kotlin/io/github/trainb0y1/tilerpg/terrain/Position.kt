@@ -2,7 +2,7 @@ package io.github.trainb0y1.tilerpg.terrain
 
 import com.badlogic.gdx.math.Vector2
 import io.github.trainb0y1.tilerpg.terrain.chunk.Chunk
-import io.github.trainb0y1.tilerpg.terrain.tile.TileType
+import io.github.trainb0y1.tilerpg.terrain.tile.TileData
 
 /**
  * Holds an x and y value.
@@ -56,14 +56,14 @@ data class Position(var x: Float, var y: Float) {
 	 * Convenience reference to TerrainHandler.getTile(this, [force])
 	 * @see TerrainHandler.getTile
 	 */
-	fun getTile(force: Boolean = false): TileType? = TerrainHandler.getTile(this)
+	fun getTile(force: Boolean = false): TileData? = TerrainHandler.getTile(this)
 
 	/**
 	 * Convenience reference to TerrainHandler.setTile(this, [tileType], [force])
 	 * @see TerrainHandler.setTile
 	 */
-	fun setTile(pos: Position, tileType: TileType, force: Boolean = false): Boolean =
-		TerrainHandler.setTile(this, tileType, force)
+	fun setTile(pos: Position, tile: TileData, force: Boolean = false): Boolean =
+		TerrainHandler.setTile(this, tile, force)
 
 	/**
 	 * Self explanatory, if you don't understand it, go visit the hospital

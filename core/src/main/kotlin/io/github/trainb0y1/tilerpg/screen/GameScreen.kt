@@ -18,7 +18,7 @@ import kotlin.random.Random
 /**
  * The main game screen
  */
-class GameScreen(world: World) : KtxScreen {
+class GameScreen(worldId: String) : KtxScreen {
 	private val batch = SpriteBatch()
 
 	companion object {
@@ -30,7 +30,7 @@ class GameScreen(world: World) : KtxScreen {
 	init {
 		Gdx.app.logLevel = Application.LOG_DEBUG
 		Gdx.input.inputProcessor = InputListener()
-		TerrainHandler.world = world
+		TerrainHandler.loadWorld(worldId)
 	}
 
 

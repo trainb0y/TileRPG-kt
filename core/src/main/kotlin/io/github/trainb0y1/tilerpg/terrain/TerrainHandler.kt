@@ -1,6 +1,7 @@
 package io.github.trainb0y1.tilerpg.terrain
 
 import io.github.trainb0y1.tilerpg.terrain.chunk.Chunk
+import io.github.trainb0y1.tilerpg.terrain.tile.TileData
 import io.github.trainb0y1.tilerpg.terrain.tile.TileType
 
 /**
@@ -42,16 +43,25 @@ object TerrainHandler {
 	}
 
 	/**
-	 * @return the TileType at [pos]
+	 * @return the TileData at [pos]
 	 * @param force whether to load/create the chunk if that chunk is not currently loaded
 	 */
-	fun getTile(pos: Position, force: Boolean = false): TileType? = getChunk(pos, force)?.getTile(pos)
+	fun getTile(pos: Position, force: Boolean = false): TileData? = getChunk(pos, force)?.getTile(pos)
 
 	/**
-	 * Set the [tileType] at [pos]
+	 * Set the [tile] at [pos]
 	 * @param force whether to load/create the chunk if it is not currently loaded
 	 * @return whether placing succeeded
 	 */
-	fun setTile(pos: Position, tileType: TileType, force: Boolean = false): Boolean =
-		getChunk(pos, force)?.setTile(pos, tileType) ?: false
+	fun setTile(pos: Position, tile: TileData, force: Boolean = false): Boolean =
+		getChunk(pos, force)?.setTile(pos, tile) ?: false
+
+	/**
+	 * Tries to load world generation values from saved world with [id].
+	 * If no world is found, generates a new world with [id]
+	 * @return whether an existing world was found
+	 */
+	fun loadWorld(id: String): Boolean {
+		TODO()
+	}
 }
