@@ -7,8 +7,7 @@ import ktx.app.KtxScreen
 
 class TileRPG : KtxGame<KtxScreen>() {
 	override fun create() {
-		addScreen(MainMenuScreen())
-		addScreen(GameScreen())
+		addScreen(MainMenuScreen(this))
 		setScreen<MainMenuScreen>()
 	}
 }
