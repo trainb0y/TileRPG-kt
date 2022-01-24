@@ -3,8 +3,6 @@ package io.github.trainb0y1.tilerpg.terrain.chunk
 import io.github.trainb0y1.tilerpg.terrain.Position
 import io.github.trainb0y1.tilerpg.terrain.tile.TileData
 
-import io.github.trainb0y1.tilerpg.terrain.tile.TileType
-
 // Possible concern: Position's values can be floats, so tiles can be placed at floats?
 class Chunk(private val size: Int = 16, val origin: Position) {
 	private val tiles = mutableListOf<MutableList<TileData>>()

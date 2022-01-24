@@ -10,13 +10,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import io.github.trainb0y1.tilerpg.TileRPG
-import io.github.trainb0y1.tilerpg.terrain.World
-import ktx.app.KtxGame
 import ktx.app.KtxScreen
 import ktx.app.clearScreen
 import ktx.assets.disposeSafely
 import ktx.assets.toInternalFile
-import kotlin.random.Random
 
 
 /**
@@ -24,6 +21,7 @@ import kotlin.random.Random
  */
 class MainMenuScreen(val game: TileRPG) : KtxScreen {
 	var init = false // Dumb. Dumb. Dumb.
+
 	// https://github.com/raeleus/skin-composer/wiki/From-the-Ground-Up%3A-Scene2D.UI-Tutorials
 	private val stage = Stage(ScreenViewport())
 	private var root = Table()
@@ -42,7 +40,7 @@ class MainMenuScreen(val game: TileRPG) : KtxScreen {
 		button.addListener(object : ChangeListener() {
 			override fun changed(event: ChangeEvent, actor: Actor) {
 				if (nameField.text != "") {
-					game.addScreen(GameScreen(nameField.text.replace(" ","_", true)))
+					game.addScreen(GameScreen(nameField.text.replace(" ", "_", true)))
 					game.setScreen<GameScreen>()
 				}
 			}

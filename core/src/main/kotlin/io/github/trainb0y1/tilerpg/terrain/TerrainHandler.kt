@@ -2,7 +2,6 @@ package io.github.trainb0y1.tilerpg.terrain
 
 import io.github.trainb0y1.tilerpg.terrain.chunk.Chunk
 import io.github.trainb0y1.tilerpg.terrain.tile.TileData
-import io.github.trainb0y1.tilerpg.terrain.tile.TileType
 
 /**
  * Manages the terrain; chunks, tile set methods, etc.

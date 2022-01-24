@@ -7,13 +7,11 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import io.github.trainb0y1.tilerpg.InputListener
 import io.github.trainb0y1.tilerpg.terrain.TerrainHandler
-import io.github.trainb0y1.tilerpg.terrain.World
 import io.github.trainb0y1.tilerpg.terrain.chunk.ChunkLoader
 import ktx.app.KtxScreen
 import ktx.app.clearScreen
 import ktx.assets.disposeSafely
 import ktx.graphics.use
-import kotlin.random.Random
 
 /**
  * The main game screen
