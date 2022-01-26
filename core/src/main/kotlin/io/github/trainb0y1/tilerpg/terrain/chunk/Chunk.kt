@@ -5,7 +5,7 @@ import io.github.trainb0y1.tilerpg.terrain.tile.TileData
 
 // Possible concern: Position's values can be floats, so tiles can be placed at floats?
 class Chunk(private val size: Int = 16, val origin: Position) {
-	private val tiles = mutableListOf<MutableList<TileData>>()
+	private val tiles = mutableMapOf<Position, TileData>()
 
 	fun toRelativeCoordinates(pos: Position): Position = pos - origin
 	fun toGlobalCoordinates(pos: Position): Position = pos + origin
@@ -37,7 +37,7 @@ class Chunk(private val size: Int = 16, val origin: Position) {
 	 * @return the tile at chunk coordinates [pos]
 	 */
 	fun getRelativeTile(pos: Position): TileData? {
-		return tiles[pos.x.toInt()][pos.y.toInt()]
+		return tiles[Position(pos.x, pos.y)]
 	}
 
 	/**
@@ -55,7 +55,7 @@ class Chunk(private val size: Int = 16, val origin: Position) {
 	 * @return true if placing succeeded <- should always be the case
 	 */
 	fun setRelativeTile(pos: Position, tile: TileData): Boolean {
-		tiles[pos.x.toInt()][pos.y.toInt()] = tile
+		tiles[Position(pos.x, pos.y)] = tile
 		return true
 	}
 }

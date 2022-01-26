@@ -34,10 +34,10 @@ class GameScreen(worldId: String) : KtxScreen {
 
 	override fun render(delta: Float) {
 		clearScreen(red = 0.3f, green = 0.5f, blue = 0.9f)
-		ChunkLoader.loadVisibleChunks(camera)
+		// ChunkLoader.loadVisibleChunks(camera)
 		batch.projectionMatrix = camera.combined
 		batch.use { batch ->
-			TODO()
+			// TODO()
 		}
 		logger.log()
 	}

@@ -1,7 +1,12 @@
 package io.github.trainb0y1.tilerpg.terrain
 
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.utils.Json
 import io.github.trainb0y1.tilerpg.terrain.chunk.Chunk
 import io.github.trainb0y1.tilerpg.terrain.tile.TileData
+import io.github.trainb0y1.tilerpg.terrain.tile.TileType
+import io.github.trainb0y1.tilerpg.terrain.tile.Tiles
+import ktx.assets.toLocalFile
 
 /**
  * Manages the terrain; chunks, tile set methods, etc.
@@ -18,7 +23,7 @@ object TerrainHandler {
 	fun getChunk(pos: Position, force: Boolean = false): Chunk? {
 		pos.toChunkOrigin()
 		return chunks[pos] ?: if (force) {
-			attemptLoadChunk(pos) ?: createChunk(pos)
+			loadChunkFromFile(pos) ?: createChunk(pos)
 		} else {
 			null
 		}
@@ -34,11 +39,23 @@ object TerrainHandler {
 	}
 
 	/**
-	 * Attempts to load a chunk for that origin from a file
+	 * Loads a chunk at [origin] from a file, overwrites any existing tiles
+	 * @return the chunk
 	 */
-	fun attemptLoadChunk(origin: Position): Chunk? {
-		// TODO
-		return null
+	fun loadChunkFromFile(origin: Position): Chunk? {
+		// This could really use some logging
+		val filename = getChunkFileName(origin)
+		return Json().fromJson(Chunk::class.java, filename.toLocalFile())
+	}
+
+	/**
+	 * Save the chunk at [origin] to a file
+	 * @return whether an older chunk was overwritten
+	 */
+	fun saveChunkToFile(origin: Position): Boolean{
+		val filename = getChunkFileName(origin)
+		println(Json().toJson(getChunk(origin, false)))
+		return false
 	}
 
 	/**
@@ -61,6 +78,25 @@ object TerrainHandler {
 	 * @return whether an existing world was found
 	 */
 	fun loadWorld(id: String): Boolean {
-		TODO()
+		// TODO()
+		world = World(id, 1111, 20, 20, 20)
+		chunks[Position(0,0)] = Chunk(chunkSize, Position(0,0))
+		setTile(Position(3,4), TileData("stone"))
+		saveChunkToFile(Position(0,0))
+		return false
 	}
+
+	/**
+	 * @return the filename for the chunk at [origin]
+	 */
+	fun getChunkFileName(origin: Position): String {
+		return "world-${world!!.id}/chunk-${origin.x}-${origin.y}.chunk"
+	}
+	/**
+	 * @return the filename for the current world
+	 */
+	fun getWorldFileName(origin: Position): String {
+		return "world-${world!!.id}/${world!!.id}.world"
+	}
+
 }
