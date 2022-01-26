@@ -2,6 +2,7 @@ package io.github.trainb0y1.tilerpg.terrain
 
 import com.badlogic.gdx.utils.Json
 import io.github.trainb0y1.tilerpg.terrain.chunk.Chunk
+import io.github.trainb0y1.tilerpg.terrain.generation.TerrainGenerator
 import io.github.trainb0y1.tilerpg.terrain.tile.TileData
 import ktx.assets.toLocalFile
 import ktx.json.fromJson
@@ -10,7 +11,7 @@ import ktx.json.fromJson
  * Manages the terrain; chunks, tile set methods, etc.
  */
 object TerrainHandler {
-	val chunks = mutableMapOf<Position, Chunk>()
+	var chunks = mutableMapOf<Position, Chunk>()
 	val chunkSize = 16
 	var world: World? = null
 
@@ -21,7 +22,7 @@ object TerrainHandler {
 	fun getChunk(pos: Position, force: Boolean = false): Chunk? {
 		pos.toChunkOrigin()
 		return chunks[pos] ?: if (force) {
-			loadChunkFromFile(pos) ?: createChunk(pos)
+			loadChunkFromFile(pos) ?: TerrainGenerator.generateChunk(pos)
 		} else {
 			null
 		}
@@ -43,7 +44,7 @@ object TerrainHandler {
 	fun loadChunkFromFile(origin: Position): Chunk? {
 		// This could really use some logging
 		val filename = getChunkFileName(origin)
-		return Json().fromJson<Chunk>(filename.toLocalFile())
+		return try {Json().fromJson<Chunk>(filename.toLocalFile())} catch (e: Exception) {null} // This seems dumb
 	}
 
 	/**
@@ -77,10 +78,7 @@ object TerrainHandler {
 	 */
 	fun loadWorld(id: String): Boolean {
 		// TODO()
-		world = World(id, 1111, 20, 20, 20)
-		chunks[Position(0,0)] = Chunk(chunkSize, Position(0,0))
-		setTile(Position(3,4), TileData("stone"))
-		saveChunkToFile(Position(0,0))
+		world = World(id, 1111, 15, 20, 20)
 		return false
 	}
 

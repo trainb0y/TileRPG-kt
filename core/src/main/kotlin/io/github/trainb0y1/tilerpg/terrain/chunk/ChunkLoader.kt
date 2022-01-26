@@ -17,7 +17,7 @@ object ChunkLoader {
 		val minX = (camera.position.x - (camera.viewportWidth / 2)) - bufferSize // this
 		val maxX = (camera.position.x + (camera.viewportWidth / 2)) + bufferSize // feels
 		val minY = (camera.position.y - (camera.viewportWidth / 2)) - bufferSize // very
-		val maxY = (camera.position.y - (camera.viewportWidth / 2)) + bufferSize // bad
+		val maxY = (camera.position.y + (camera.viewportWidth / 2)) + bufferSize // bad
 		val minPos = Position(minX, minY)
 		val maxPos = Position(maxX, maxY)
 
@@ -28,16 +28,19 @@ object ChunkLoader {
 			if (pos.clampXY(minPos, maxPos) != oldPos) {
 				chunksToSave.add(chunk)
 			}
+			// TerrainHandler.chunks.remove(pos) <- cant do this while we're iterating over it
 		}
 		saveChunks(chunksToSave)
 
 		// Load visible chunks
+		var newChunks = mutableMapOf<Position, Chunk>()
 		for (x in minX.toInt()..maxX.toInt() step TerrainHandler.chunkSize) {
 			for (y in minY.toInt()..maxY.toInt() step TerrainHandler.chunkSize) {
 				// All of these should be loaded
-				TerrainHandler.getChunk(Position(x, y), true) // Force will create/load it for us
+				newChunks[Position(x,y)] = TerrainHandler.getChunk(Position(x, y), true)!! // Force will create/load it for us
 			}
 		}
+		TerrainHandler.chunks = newChunks
 	}
 
 	/**
