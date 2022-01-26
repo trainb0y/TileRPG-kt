@@ -15,9 +15,9 @@ object ChunkLoader {
 	fun loadVisibleChunks(camera: OrthographicCamera, buffer: Int = 0) {
 		val bufferSize = TerrainHandler.chunkSize * buffer
 		// Adding chunkSize so that visible chunks with non-visible origins are still loaded
-		val minX = (camera.position.x - (camera.viewportWidth / 2)) - bufferSize + TerrainHandler.chunkSize// this
+		val minX = (camera.position.x - (camera.viewportWidth / 2)) - bufferSize - TerrainHandler.chunkSize// this
 		val maxX = (camera.position.x + (camera.viewportWidth / 2)) + bufferSize // feels
-		val minY = (camera.position.y - (camera.viewportWidth / 2)) - bufferSize + TerrainHandler.chunkSize // very
+		val minY = (camera.position.y - (camera.viewportWidth / 2)) - bufferSize - TerrainHandler.chunkSize // very
 		val maxY = (camera.position.y + (camera.viewportWidth / 2)) + bufferSize // bad
 		val minPos = Position(minX, minY)
 		val maxPos = Position(maxX, maxY)
