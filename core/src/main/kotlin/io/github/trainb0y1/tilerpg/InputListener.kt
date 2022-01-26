@@ -3,6 +3,7 @@ package io.github.trainb0y1.tilerpg
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.InputProcessor
 import io.github.trainb0y1.tilerpg.screen.GameScreen.Companion.camera
+import io.github.trainb0y1.tilerpg.terrain.chunk.ChunkLoader
 
 class InputListener : InputProcessor {
 	override fun keyDown(keycode: Int): Boolean {
@@ -13,6 +14,7 @@ class InputListener : InputProcessor {
 			Input.Keys.W -> camera.translate(0f, 5f)
 		}
 		camera.update()
+		ChunkLoader.loadVisibleChunks(camera)
 		return true
 	}
 
