@@ -1,0 +1,41 @@
+
+tiles.png
+size: 64, 16
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+dirt
+  rotate: false
+  xy: 2, 2
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+grass
+  rotate: false
+  xy: 12, 2
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+sand
+  rotate: false
+  xy: 22, 2
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+sandstone
+  rotate: false
+  xy: 32, 2
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+stone
+  rotate: false
+  xy: 42, 2
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
