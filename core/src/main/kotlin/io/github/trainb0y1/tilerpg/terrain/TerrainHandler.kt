@@ -1,12 +1,10 @@
 package io.github.trainb0y1.tilerpg.terrain
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.utils.Json
 import io.github.trainb0y1.tilerpg.terrain.chunk.Chunk
 import io.github.trainb0y1.tilerpg.terrain.tile.TileData
-import io.github.trainb0y1.tilerpg.terrain.tile.TileType
-import io.github.trainb0y1.tilerpg.terrain.tile.Tiles
 import ktx.assets.toLocalFile
+import ktx.json.fromJson
 
 /**
  * Manages the terrain; chunks, tile set methods, etc.
@@ -45,7 +43,7 @@ object TerrainHandler {
 	fun loadChunkFromFile(origin: Position): Chunk? {
 		// This could really use some logging
 		val filename = getChunkFileName(origin)
-		return Json().fromJson(Chunk::class.java, filename.toLocalFile())
+		return Json().fromJson<Chunk>(filename.toLocalFile())
 	}
 
 	/**
