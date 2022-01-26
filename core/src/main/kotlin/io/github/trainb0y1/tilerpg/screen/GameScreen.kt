@@ -5,9 +5,9 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.FPSLogger
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.utils.viewport.FillViewport
 import io.github.trainb0y1.tilerpg.InputListener
 import io.github.trainb0y1.tilerpg.terrain.TerrainHandler
-import io.github.trainb0y1.tilerpg.terrain.chunk.ChunkLoader
 import ktx.app.KtxScreen
 import ktx.app.clearScreen
 import ktx.assets.disposeSafely
@@ -24,11 +24,17 @@ class GameScreen(worldId: String) : KtxScreen {
 	}
 
 	val logger = FPSLogger()
+	val viewport = FillViewport(80f, 60f, camera)
 
 	init {
 		Gdx.app.logLevel = Application.LOG_DEBUG
 		Gdx.input.inputProcessor = InputListener()
+
 		TerrainHandler.loadWorld(worldId)
+	}
+
+	override fun resize(width: Int, height: Int) {
+		viewport.update(width, height)
 	}
 
 
