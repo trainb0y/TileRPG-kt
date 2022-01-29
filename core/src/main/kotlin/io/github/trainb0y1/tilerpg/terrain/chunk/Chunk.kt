@@ -47,7 +47,7 @@ class Chunk(private val size: Int = 16, val origin: Position) {
 	 * @throws PositionNotInChunkException if this chunk does not contain [pos]
 	 * @return true if placing succeeded
 	 */
-	fun setTile(pos: Position, tile: TileData): Boolean {
+	fun setTile(pos: Position, tile: TileData?): Boolean {
 		if (!contains(pos)) throw PositionNotInChunkException(this, pos)
 		return setRelativeTile(toRelativeCoordinates(pos), tile)
 	}
@@ -56,8 +56,9 @@ class Chunk(private val size: Int = 16, val origin: Position) {
 	 * Sets the tile at chunk relative coordinates [pos]
 	 * @return true if placing succeeded <- should always be the case
 	 */
-	fun setRelativeTile(pos: Position, tile: TileData): Boolean {
-		tiles[Position(pos.x, pos.y)] = tile
+	fun setRelativeTile(pos: Position, tile: TileData?): Boolean {
+		tile ?: tiles.remove(Position(pos.x, pos.y))
+		tiles[Position(pos.x, pos.y)] = tile!!
 		return true
 	}
 

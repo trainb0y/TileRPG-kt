@@ -63,7 +63,7 @@ data class Position(var x: Float, var y: Float) {
 	 * Convenience reference to TerrainHandler.setTile(this, [tileType], [force])
 	 * @see TerrainHandler.setTile
 	 */
-	fun setTile(tile: TileData, force: Boolean = false): Boolean =
+	fun setTile(tile: TileData?, force: Boolean = false): Boolean =
 		TerrainHandler.setTile(this, tile, force)
 
 	/**

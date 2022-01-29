@@ -68,7 +68,7 @@ object TerrainHandler {
 	 * @param force whether to load/create the chunk if it is not currently loaded
 	 * @return whether placing succeeded
 	 */
-	fun setTile(pos: Position, tile: TileData, force: Boolean = false): Boolean =
+	fun setTile(pos: Position, tile: TileData?, force: Boolean = false): Boolean =
 		getChunk(pos, force)?.setTile(pos, tile) ?: false
 
 	/**
