@@ -20,9 +20,9 @@ object TerrainHandler {
 	 * @param force whether to load/create the chunk if it isn't currently loaded
 	 */
 	fun getChunk(pos: Position, force: Boolean = false): Chunk? {
-		pos.toChunkOrigin()
-		return chunks[pos] ?: if (force) {
-			loadChunkFromFile(pos) ?: TerrainGenerator.generateChunk(pos)
+		val origin = pos.chunkOrigin
+		return chunks[origin] ?: if (force) {
+			loadChunkFromFile(origin) ?: TerrainGenerator.generateChunk(origin)
 		} else {
 			null
 		}

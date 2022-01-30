@@ -30,11 +30,11 @@ class InputListener : InputProcessor {
 		val pos = Position(cameraPos.x, cameraPos.y)
 		when (button) {
 			Input.Buttons.RIGHT -> {
-				pos.setTile(TileData(Tiles.STONE))
+				pos.forceTile = TileData(Tiles.STONE)
 				info {"stone (${pos.x},${pos.y})"}
 			}
 			Input.Buttons.LEFT -> {
-				pos.setTile(null)
+				pos.forceTile = null
 				info {"null (${pos.x},${pos.y})"}
 			}
 		}

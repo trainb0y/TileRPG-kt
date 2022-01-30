@@ -57,8 +57,11 @@ class Chunk(private val size: Int = 16, val origin: Position) {
 	 * @return true if placing succeeded <- should always be the case
 	 */
 	fun setRelativeTile(pos: Position, tile: TileData?): Boolean {
-		tile ?: tiles.remove(Position(pos.x, pos.y))
-		tiles[Position(pos.x, pos.y)] = tile!!
+		if (tile == null) {
+			tiles.remove(Position(pos.x, pos.y))
+			return true
+		}
+		tiles[Position(pos.x, pos.y)] = tile
 		return true
 	}
 

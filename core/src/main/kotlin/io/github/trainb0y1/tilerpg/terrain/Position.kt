@@ -29,42 +29,49 @@ data class Position(var x: Float, var y: Float) {
 
 	/**
 	 * Clamp this position's x and y coordinates between those of [min] and [max]
-	 * @return this position for chaining
+	 * @return this position clamped between [min] and [max]
 	 */
 	fun clampXY(min: Position, max: Position): Position {
-		this.x = this.x.coerceIn(min.x, max.x)
-		this.y = this.y.coerceIn(min.y, max.y)
-		return this
+		return Position(x.coerceIn(min.x, max.x), y.coerceIn(min.y, max.y))
 	}
 
 	/**
-	 * Set this position to the chunk origin of the chunk that contains it
-	 * @return this position for chaining
+	 * the origin of the chunk that contains this position
 	 */
-	fun toChunkOrigin(): Position {
-		x -= x % TerrainHandler.chunkSize
-		y -= y % TerrainHandler.chunkSize
-		return this
-	}
+	val chunkOrigin: Position
+		get() = Position(x % TerrainHandler.chunkSize, y % TerrainHandler.chunkSize)
 
 	/**
-	 * Convenience reference to TerrainHandler.getChunk(this, [force])
-	 * @see TerrainHandler.getChunk
+	 * The chunk that contains this position
+	 * @see forceChunk
 	 */
-	fun getChunk(force: Boolean = false): Chunk? = TerrainHandler.getChunk(this, force)
+	val chunk: Chunk?
+		get() = TerrainHandler.getChunk(this, false)
 
 	/**
-	 * Convenience reference to TerrainHandler.getTile(this, [force])
-	 * @see TerrainHandler.getTile
+	 * The chunk that contains this position
+	 * Creates/loads it if it is not currently loaded
+	 * @see chunk
 	 */
-	fun getTile(force: Boolean = false): TileData? = TerrainHandler.getTile(this)
+	val forceChunk: Chunk
+		get() = TerrainHandler.getChunk(this, true)!!
 
 	/**
-	 * Convenience reference to TerrainHandler.setTile(this, [tileType], [force])
-	 * @see TerrainHandler.setTile
+	 * The tile at this position
+	 * @see forceTile
 	 */
-	fun setTile(tile: TileData?, force: Boolean = false): Boolean =
-		TerrainHandler.setTile(this, tile, force)
+	var tile: TileData?
+		get() = TerrainHandler.getTile(this, false)
+		set(value) {TerrainHandler.setTile(this, value, false)}
+
+	/**
+	 * The tile at this position.
+	 * Creates/loads the chunk if the chunk is not loaded
+	 * @see tile
+	 */
+	var forceTile: TileData?
+		get() = TerrainHandler.getTile(this, true)
+		set(value) {TerrainHandler.setTile(this, value, true)}
 
 	/**
 	 * Self explanatory, if you don't understand it, go visit the hospital

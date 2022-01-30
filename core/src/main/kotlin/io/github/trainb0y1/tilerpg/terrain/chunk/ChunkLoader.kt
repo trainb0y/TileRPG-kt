@@ -1,6 +1,7 @@
 package io.github.trainb0y1.tilerpg.terrain.chunk
 
 import com.badlogic.gdx.graphics.OrthographicCamera
+import com.badlogic.gdx.utils.Json
 import io.github.trainb0y1.tilerpg.terrain.Position
 import io.github.trainb0y1.tilerpg.terrain.TerrainHandler
 
@@ -29,7 +30,6 @@ object ChunkLoader {
 			if (pos.clampXY(minPos, maxPos) != oldPos) {
 				chunksToSave.add(chunk)
 			}
-			// TerrainHandler.chunks.remove(pos) <- cant do this while we're iterating over it
 		}
 		saveChunks(chunksToSave)
 
@@ -52,6 +52,7 @@ object ChunkLoader {
 		// Can we do this async?
 		chunks.forEach { chunk ->
 			// Save the chunk to a file
+
 			// TODO
 		}
 	}
@@ -60,7 +61,7 @@ object ChunkLoader {
 	 * @return the chunk at [pos] loaded from a file, null if it was never saved
 	 */
 	fun loadChunk(pos: Position): Chunk? {
-		val chunkOrigin = pos.toChunkOrigin()
+		val chunkOrigin = pos.chunkOrigin
 		// TODO
 		return null
 	}
