@@ -26,8 +26,7 @@ object ChunkLoader {
 		// Save non-visible chunks
 		val chunksToSave = mutableSetOf<Chunk>()
 		TerrainHandler.chunks.forEach { (pos, chunk) ->
-			val oldPos = pos // pos gets modified by clampXY
-			if (pos.clampXY(minPos, maxPos) != oldPos) {
+			if (pos.clampXY(minPos, maxPos) != pos) {
 				chunksToSave.add(chunk)
 			}
 		}
