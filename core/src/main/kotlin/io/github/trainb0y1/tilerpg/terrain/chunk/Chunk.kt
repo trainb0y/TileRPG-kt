@@ -39,7 +39,7 @@ class Chunk(private val size: Int = 16, val origin: Position) {
 	 * @return the tile at chunk coordinates [pos]
 	 */
 	fun getRelativeTile(pos: Position): TileData? {
-		return tiles[Position(pos.x, pos.y)]
+		return tiles[Position(pos.x, pos.y).roundToInt()]
 	}
 
 	/**
@@ -58,10 +58,10 @@ class Chunk(private val size: Int = 16, val origin: Position) {
 	 */
 	fun setRelativeTile(pos: Position, tile: TileData?): Boolean {
 		if (tile == null) {
-			tiles.remove(Position(pos.x, pos.y))
+			tiles.remove(Position(pos.x, pos.y).roundToInt())
 			return true
 		}
-		tiles[Position(pos.x, pos.y)] = tile
+		tiles[Position(pos.x, pos.y).roundToInt()] = tile
 		return true
 	}
 
