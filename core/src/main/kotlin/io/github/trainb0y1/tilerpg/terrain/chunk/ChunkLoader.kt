@@ -15,13 +15,16 @@ object ChunkLoader {
 	@Suppress("UnnecessaryVariable")
 	fun loadVisibleChunks(camera: OrthographicCamera, buffer: Int = 0) {
 		val bufferSize = TerrainHandler.chunkSize * buffer
-		// Adding chunkSize so that visible chunks with non-visible origins are still loaded
-		val minX = (camera.position.x - (camera.viewportWidth / 2)) - bufferSize - TerrainHandler.chunkSize// this
-		val maxX = (camera.position.x + (camera.viewportWidth / 2)) + bufferSize // feels
-		val minY = (camera.position.y - (camera.viewportWidth / 2)) - bufferSize - TerrainHandler.chunkSize // very
-		val maxY = (camera.position.y + (camera.viewportWidth / 2)) + bufferSize // bad
-		val minPos = Position(minX, minY)
-		val maxPos = Position(maxX, maxY)
+
+		val minPos = Position(
+			// Subtracting chunkSize so that visible chunks with non-visible origins are still loaded
+			(camera.position.x - (camera.viewportWidth / 2)) - bufferSize - TerrainHandler.chunkSize, // this
+			(camera.position.y - (camera.viewportWidth / 2)) - bufferSize - TerrainHandler.chunkSize // feels
+		)
+		val maxPos = Position(
+			(camera.position.x + (camera.viewportWidth / 2)) + bufferSize, // very
+			(camera.position.y + (camera.viewportWidth / 2)) + bufferSize // bad
+		)
 
 		// Save non-visible chunks
 		val chunksToSave = mutableSetOf<Chunk>()
@@ -34,8 +37,8 @@ object ChunkLoader {
 
 		// Load visible chunks
 		var newChunks = mutableMapOf<Position, Chunk>()
-		for (x in minX.toInt()..maxX.toInt() step TerrainHandler.chunkSize) {
-			for (y in minY.toInt()..maxY.toInt() step TerrainHandler.chunkSize) {
+		for (x in minPos.x.toInt()..maxPos.x.toInt() step TerrainHandler.chunkSize) {
+			for (y in minPos.y.toInt()..maxPos.y.toInt() step TerrainHandler.chunkSize) {
 				// All of these should be loaded
 				newChunks[Position(x,y)] = TerrainHandler.getChunk(Position(x, y), true)!! // Force will create/load it for us
 			}
