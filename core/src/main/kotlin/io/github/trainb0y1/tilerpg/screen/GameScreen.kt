@@ -47,7 +47,7 @@ class GameScreen(worldId: String) : KtxScreen {
 				chunk.render(batch)
 			}
 		}
-		logger.log()
+		// logger.log()
 	}
 
 	override fun dispose() {

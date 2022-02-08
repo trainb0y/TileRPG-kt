@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.utils.Json
 import io.github.trainb0y1.tilerpg.terrain.Position
 import io.github.trainb0y1.tilerpg.terrain.TerrainHandler
+import ktx.log.info
 
 
 object ChunkLoader {
@@ -18,13 +19,13 @@ object ChunkLoader {
 
 		val minPos = Position(
 			// Subtracting chunkSize so that visible chunks with non-visible origins are still loaded
-			(camera.position.x - (camera.viewportWidth / 2)) - bufferSize - TerrainHandler.chunkSize, // this
-			(camera.position.y - (camera.viewportWidth / 2)) - bufferSize - TerrainHandler.chunkSize // feels
-		)
+			((camera.position.x - (camera.viewportWidth / 2)) - bufferSize) - TerrainHandler.chunkSize, // this
+			((camera.position.y - (camera.viewportHeight / 2)) - bufferSize) - TerrainHandler.chunkSize // feels
+		).roundToInt()
 		val maxPos = Position(
 			(camera.position.x + (camera.viewportWidth / 2)) + bufferSize, // very
-			(camera.position.y + (camera.viewportWidth / 2)) + bufferSize // bad
-		)
+			(camera.position.y + (camera.viewportHeight / 2)) + bufferSize // bad
+		).roundToInt()
 
 		// Save non-visible chunks
 		val chunksToSave = mutableSetOf<Chunk>()
@@ -44,6 +45,10 @@ object ChunkLoader {
 			}
 		}
 		TerrainHandler.chunks = newChunks
+
+		info {
+			"Camera position: (${camera.position.x}, ${camera.position.y})  Min: (${minPos.x}, ${minPos.y})  Max: (${maxPos.x}, ${maxPos.y}) Chunks: ${newChunks.size}"
+		}
 	}
 
 	/**
@@ -64,6 +69,7 @@ object ChunkLoader {
 	 */
 	fun loadChunk(pos: Position): Chunk? {
 		val chunkOrigin = pos.chunkOrigin
+		val world = TerrainHandler.world!!.id
 		// TODO
 		return null
 	}
