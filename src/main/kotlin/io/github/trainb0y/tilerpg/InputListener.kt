@@ -11,18 +11,7 @@ import io.github.trainb0y.tilerpg.terrain.tile.Tile
 import ktx.log.info
 
 class InputListener : InputProcessor {
-	override fun keyDown(keycode: Int): Boolean {
-		when (keycode) {
-			Input.Keys.A -> camera.translate(-5f, 0f)
-			Input.Keys.D -> camera.translate(5f, 0f)
-			Input.Keys.S -> camera.translate(0f, -5f)
-			Input.Keys.W -> camera.translate(0f, 5f)
-		}
-		camera.update()
-		ChunkLoader.loadVisibleChunks(camera)
-		return true
-	}
-
+	override fun keyDown(keycode: Int): Boolean = false
 	override fun keyUp(keycode: Int): Boolean = false
 	override fun keyTyped(character: Char): Boolean = false
 	override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {

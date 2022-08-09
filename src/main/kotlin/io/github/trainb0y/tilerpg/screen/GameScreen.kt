@@ -2,12 +2,14 @@ package io.github.trainb0y.tilerpg.screen
 
 import com.badlogic.gdx.Application
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.FPSLogger
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.utils.viewport.FillViewport
 import io.github.trainb0y.tilerpg.InputListener
 import io.github.trainb0y.tilerpg.terrain.TerrainHandler
+import io.github.trainb0y.tilerpg.terrain.chunk.ChunkLoader
 import ktx.app.KtxScreen
 import ktx.app.clearScreen
 import ktx.assets.disposeSafely
@@ -40,7 +42,18 @@ class GameScreen(worldId: String) : KtxScreen {
 
 	override fun render(delta: Float) {
 		clearScreen(red = 0.3f, green = 0.5f, blue = 0.9f)
-		// ChunkLoader.loadVisibleChunks(camera)
+
+
+		// this whole chunk is concentrated idiocy
+		// delete this asap
+		if (Gdx.input.isKeyPressed(Input.Keys.W)) camera.position.y += 0.55f
+		if (Gdx.input.isKeyPressed(Input.Keys.S)) camera.position.y -= 0.55f
+		if (Gdx.input.isKeyPressed(Input.Keys.A)) camera.position.x -= 0.55f
+		if (Gdx.input.isKeyPressed(Input.Keys.D)) camera.position.x += 0.55f
+		camera.update() // bad idea lol
+		ChunkLoader.loadVisibleChunks(camera)
+
+
 		batch.projectionMatrix = camera.combined
 		batch.use { batch ->
 			TerrainHandler.chunks.forEach { (_, chunk) ->
