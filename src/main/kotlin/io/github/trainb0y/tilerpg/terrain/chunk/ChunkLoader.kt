@@ -1,9 +1,8 @@
-package io.github.trainb0y1.tilerpg.terrain.chunk
+package io.github.trainb0y.tilerpg.terrain.chunk
 
 import com.badlogic.gdx.graphics.OrthographicCamera
-import com.badlogic.gdx.utils.Json
-import io.github.trainb0y1.tilerpg.terrain.Position
-import io.github.trainb0y1.tilerpg.terrain.TerrainHandler
+import io.github.trainb0y.tilerpg.terrain.Position
+import io.github.trainb0y.tilerpg.terrain.TerrainHandler
 import ktx.log.info
 
 

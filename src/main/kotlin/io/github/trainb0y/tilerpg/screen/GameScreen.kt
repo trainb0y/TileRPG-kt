@@ -1,4 +1,4 @@
-package io.github.trainb0y1.tilerpg.screen
+package io.github.trainb0y.tilerpg.screen
 
 import com.badlogic.gdx.Application
 import com.badlogic.gdx.Gdx
@@ -6,8 +6,8 @@ import com.badlogic.gdx.graphics.FPSLogger
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.utils.viewport.FillViewport
-import io.github.trainb0y1.tilerpg.InputListener
-import io.github.trainb0y1.tilerpg.terrain.TerrainHandler
+import io.github.trainb0y.tilerpg.InputListener
+import io.github.trainb0y.tilerpg.terrain.TerrainHandler
 import ktx.app.KtxScreen
 import ktx.app.clearScreen
 import ktx.assets.disposeSafely
