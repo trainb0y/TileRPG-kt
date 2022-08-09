@@ -42,11 +42,6 @@ class InputListener : InputProcessor {
 	}
 	override fun touchUp(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean = false
 	override fun touchDragged(screenX: Int, screenY: Int, pointer: Int): Boolean = false
-	override fun mouseMoved(screenX: Int, screenY: Int): Boolean {
-		val cameraPos = camera.unproject(Vector3(screenX.toFloat(), screenY.toFloat(),0f))
-		val pos = Position(cameraPos.x, cameraPos.y)
-		info {"mouse (${pos.x},${pos.y})"}
-		return false
-	}
+	override fun mouseMoved(screenX: Int, screenY: Int): Boolean = false
 	override fun scrolled(amountX: Float, amountY: Float): Boolean = false
 }

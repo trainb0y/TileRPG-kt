@@ -3,8 +3,6 @@ package io.github.trainb0y.tilerpg.terrain.chunk
 import com.badlogic.gdx.graphics.OrthographicCamera
 import io.github.trainb0y.tilerpg.terrain.Position
 import io.github.trainb0y.tilerpg.terrain.TerrainHandler
-import ktx.log.info
-
 
 object ChunkLoader {
 	/**
@@ -40,14 +38,10 @@ object ChunkLoader {
 		for (x in minPos.x.toInt()..maxPos.x.toInt() step TerrainHandler.chunkSize) {
 			for (y in minPos.y.toInt()..maxPos.y.toInt() step TerrainHandler.chunkSize) {
 				// All of these should be loaded
-				newChunks[Position(x,y)] = TerrainHandler.getChunk(Position(x, y), true)!! // Force will create/load it for us
+				newChunks[Position(x,y).chunkOrigin] = TerrainHandler.getChunk(Position(x, y), true)!! // Force will create/load it for us
 			}
 		}
 		TerrainHandler.chunks = newChunks
-
-		info {
-			"Camera position: (${camera.position.x}, ${camera.position.y})  Min: (${minPos.x}, ${minPos.y})  Max: (${maxPos.x}, ${maxPos.y}) Chunks: ${newChunks.size}"
-		}
 	}
 
 	/**
