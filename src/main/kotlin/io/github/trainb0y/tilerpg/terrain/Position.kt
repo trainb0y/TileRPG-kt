@@ -9,21 +9,17 @@ import io.github.trainb0y.tilerpg.terrain.tile.TileData
  * Created because the number of extension functions on [Vector2] was getting ridiculous
  * @see Vector2
  */
-data class Position(var x: Float, var y: Float) {
+data class Position(val x: Float, val y: Float) {
 	constructor(x: Int, y: Int) : this(x.toFloat(), y.toFloat()) // might as well
 	operator fun plus(other: Position) = Position(x + other.x, y + other.y)
 	operator fun minus(other: Position) = Position(x - other.x, y - other.y)
 
 
 	/**
-	 * Force round x and y values to be integers
-	 * @return this position for chaining
+	 * Round x and y values to be integers
 	 */
-	fun roundToInt(): Position { // There's probably a better way to do this
-		x = x.toInt().toFloat()
-		y = y.toInt().toFloat()
-		return this
-	}
+	fun roundToInt(): Position = Position(x.toInt().toFloat(), y.toInt().toFloat())
+
 
 	/**
 	 * Clamp this position's x and y coordinates between those of [min] and [max]
