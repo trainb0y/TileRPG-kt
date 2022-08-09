@@ -43,7 +43,7 @@ class GameScreen(worldId: String) : KtxScreen {
 		// ChunkLoader.loadVisibleChunks(camera)
 		batch.projectionMatrix = camera.combined
 		batch.use { batch ->
-			TerrainHandler.chunks.forEach { _, chunk ->
+			TerrainHandler.chunks.forEach { (_, chunk) ->
 				chunk.render(batch)
 			}
 		}

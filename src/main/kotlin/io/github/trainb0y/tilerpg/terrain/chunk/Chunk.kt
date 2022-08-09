@@ -2,15 +2,14 @@ package io.github.trainb0y.tilerpg.terrain.chunk
 
 import com.badlogic.gdx.graphics.g2d.Batch
 import io.github.trainb0y.tilerpg.terrain.Position
-import io.github.trainb0y.tilerpg.terrain.tile.Textures
 import io.github.trainb0y.tilerpg.terrain.tile.TileData
 
 // Possible concern: Position's values can be floats, so tiles can be placed at floats?
 class Chunk(private val size: Int = 16, val origin: Position) {
 	private val tiles = mutableMapOf<Position, TileData>()
 
-	fun toRelativeCoordinates(pos: Position): Position = pos - origin
-	fun toGlobalCoordinates(pos: Position): Position = pos + origin
+	fun toRelativeCoordinates(globalPos: Position): Position = globalPos - origin
+	fun toGlobalCoordinates(relativePos: Position): Position = relativePos + origin
 
 	/**
 	 * @return whether the global position [pos] is contained in this chunk
