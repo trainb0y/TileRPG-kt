@@ -70,7 +70,7 @@ class Chunk(private val size: Int = 16, val origin: Position) {
 	 */
 	fun render(batch: Batch) {
 		tiles.forEach { (pos, tile) ->
-			batch.draw(Textures.tileTextures[tile.type.id], pos.x+origin.x, pos.y+origin.y, 1f, 1f)
+			batch.draw(tile.type.texture, pos.x+origin.x, pos.y+origin.y, 1f, 1f)
 		}
 	}
 }
