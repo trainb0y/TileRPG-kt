@@ -35,7 +35,7 @@ data class Position(var x: Float, var y: Float) {
 	 * the origin of the chunk that contains this position
 	 */
 	val chunkOrigin: Position
-		get() = Position(x % TerrainHandler.chunkSize, y % TerrainHandler.chunkSize)
+		get() = this - Position(x % TerrainHandler.chunkSize, y % TerrainHandler.chunkSize)
 
 	/**
 	 * The chunk that contains this position
