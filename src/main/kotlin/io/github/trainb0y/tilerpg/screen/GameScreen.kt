@@ -41,7 +41,7 @@ class GameScreen(worldId: String) : KtxScreen {
 
 
 	override fun render(delta: Float) {
-		clearScreen(red = 0.3f, green = 0.5f, blue = 0.9f)
+		clearScreen(red = 0.5f, green = 0.6f, blue = 1f)
 
 
 		// this whole chunk is concentrated idiocy
@@ -51,7 +51,7 @@ class GameScreen(worldId: String) : KtxScreen {
 		if (Gdx.input.isKeyPressed(Input.Keys.A)) camera.position.x -= 0.55f
 		if (Gdx.input.isKeyPressed(Input.Keys.D)) camera.position.x += 0.55f
 		camera.update() // bad idea lol
-		ChunkLoader.loadVisibleChunks(camera)
+		ChunkLoader.loadVisibleChunks(camera, 1)
 
 
 		batch.projectionMatrix = camera.combined

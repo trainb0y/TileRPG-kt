@@ -67,7 +67,7 @@ object TerrainHandler {
 	 */
 	fun loadWorld(id: String): Boolean {
 		// TODO()
-		world = World(id, 1111, 10, 20, 20)
+		world = World(id, 1111, 10, 40, 20)
 		return false
 	}
 
