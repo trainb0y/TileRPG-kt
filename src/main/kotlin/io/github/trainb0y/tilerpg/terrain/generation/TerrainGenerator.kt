@@ -22,7 +22,8 @@ object TerrainGenerator {
 				0.0
 			) * TerrainHandler.world!!.amplitude).toInt() + TerrainHandler.world!!.heightBonus
 			for (y in 0..(maxHeight-origin.y).coerceAtMost(TerrainHandler.chunkSize.toFloat()).toInt()) {
-				if (y + 3 > maxHeight-origin.y ) chunk.setRelativeTile(Position(x,y), TileData(Tile.DIRT))
+				if (y + 1> maxHeight-origin.y ) chunk.setRelativeTile(Position(x,y), TileData(Tile.GRASS))
+				else if (y + 4 > maxHeight-origin.y ) chunk.setRelativeTile(Position(x,y), TileData(Tile.DIRT))
 				else chunk.setRelativeTile(Position(x,y), TileData(Tile.STONE))
 			}
 		}

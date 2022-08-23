@@ -19,12 +19,12 @@ class InputListener : InputProcessor {
 		val pos = Position(cameraPos.x, cameraPos.y)
 		when (button) {
 			Input.Buttons.RIGHT -> {
-				pos.forceTile = TileData(Tile.STONE)
-				info {"stone (${pos.x},${pos.y})"}
+				pos.forceTile = TileData(Tile.SAND)
+				info {"placed (${pos.x},${pos.y})"}
 			}
 			Input.Buttons.LEFT -> {
 				pos.forceTile = null
-				info {"null (${pos.x},${pos.y})"}
+				info {"removed (${pos.x},${pos.y})"}
 			}
 		}
 		return true
