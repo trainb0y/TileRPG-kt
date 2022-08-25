@@ -3,10 +3,9 @@ package io.github.trainb0y.tilerpg.screen
 import com.badlogic.gdx.Application
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
-import com.badlogic.gdx.graphics.FPSLogger
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import com.badlogic.gdx.utils.viewport.FillViewport
+import com.badlogic.gdx.utils.viewport.ScreenViewport
 import io.github.trainb0y.tilerpg.InputListener
 import io.github.trainb0y.tilerpg.terrain.TerrainHandler
 import io.github.trainb0y.tilerpg.terrain.chunk.ChunkLoader
@@ -25,11 +24,13 @@ class GameScreen(worldId: String) : KtxScreen {
 		val camera = OrthographicCamera(80f, 60f)
 	}
 
-	val viewport = FillViewport(80f, 60f, camera)
+	val viewport = ScreenViewport(camera)
 
 	init {
 		Gdx.app.logLevel = Application.LOG_DEBUG
 		Gdx.input.inputProcessor = InputListener()
+
+		viewport.unitsPerPixel = 0.1f // view scaling more or less
 
 		TerrainHandler.loadWorld(worldId)
 	}
