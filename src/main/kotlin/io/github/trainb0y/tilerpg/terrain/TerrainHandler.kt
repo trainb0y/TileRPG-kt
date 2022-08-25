@@ -1,7 +1,6 @@
 package io.github.trainb0y.tilerpg.terrain
 
 import com.badlogic.gdx.utils.Json
-import io.github.trainb0y.tilerpg.terrain.TerrainHandler.world
 import io.github.trainb0y.tilerpg.terrain.chunk.Chunk
 import io.github.trainb0y.tilerpg.terrain.generation.TerrainGenerator
 import io.github.trainb0y.tilerpg.terrain.tile.TileData
@@ -34,14 +33,18 @@ object TerrainHandler {
 	private fun loadChunkFromFile(origin: TilePosition): Chunk? {
 		// This could really use some logging
 		val filename = getChunkFileName(origin)
-		return try {Json().fromJson<Chunk>(filename.toLocalFile())} catch (e: Exception) {null} // This seems dumb
+		return try {
+			Json().fromJson<Chunk>(filename.toLocalFile())
+		} catch (e: Exception) {
+			null
+		} // This seems dumb
 	}
 
 	/**
 	 * Save the chunk at [origin] to a file
 	 * @return whether an older chunk was overwritten
 	 */
-	private fun saveChunkToFile(origin: TilePosition): Boolean{
+	private fun saveChunkToFile(origin: TilePosition): Boolean {
 		val filename = getChunkFileName(origin)
 		println(Json().toJson(getChunk(origin, false)))
 		return false
@@ -75,7 +78,8 @@ object TerrainHandler {
 	/**
 	 * @return the filename for the chunk at [origin]
 	 */
-	private fun getChunkFileName(origin: TilePosition) = getWorldDirectory() + "/chunks/chunk-${origin.x}-${origin.y}.chunk"
+	private fun getChunkFileName(origin: TilePosition) =
+		getWorldDirectory() + "/chunks/chunk-${origin.x}-${origin.y}.chunk"
 
 	/**
 	 * @return the filename for the current world

@@ -1,9 +1,7 @@
 package io.github.trainb0y.tilerpg.terrain
 
 import com.badlogic.gdx.math.Vector2
-import io.github.trainb0y.tilerpg.terrain.chunk.Chunk
 import io.github.trainb0y.tilerpg.terrain.tile.TileData
-import kotlin.math.abs
 
 /**
  * Holds an x and y value.
@@ -24,8 +22,11 @@ data class TilePosition(val x: Int, val y: Int) {
 	 * the origin of the chunk that contains this position, if that chunk is loaded
 	 */
 	val chunkOrigin: TilePosition
-		get() = this - TilePosition(Math.floorMod(x, TerrainHandler.chunkSize), Math.floorMod(y, TerrainHandler.chunkSize))
-		// % can return negative, so use floorMod
+		get() = this - TilePosition(
+			Math.floorMod(x, TerrainHandler.chunkSize),
+			Math.floorMod(y, TerrainHandler.chunkSize)
+		)
+	// % can return negative, so use floorMod
 	/**
 	 * The chunk that contains this position
 	 * @see TerrainHandler.getChunk

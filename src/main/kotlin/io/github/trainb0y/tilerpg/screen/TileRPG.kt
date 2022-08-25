@@ -1,6 +1,5 @@
 package io.github.trainb0y.tilerpg.screen
 
-import io.github.trainb0y.tilerpg.screen.MainMenuScreen
 import ktx.app.KtxGame
 import ktx.app.KtxScreen
 

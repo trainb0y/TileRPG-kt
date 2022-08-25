@@ -1,4 +1,5 @@
 package io.github.trainb0y.tilerpg.terrain.tile
+
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import ktx.assets.toInternalFile
 

@@ -1,8 +1,8 @@
 package io.github.trainb0y.tilerpg.terrain.chunk
 
 import com.badlogic.gdx.graphics.OrthographicCamera
-import io.github.trainb0y.tilerpg.terrain.TilePosition
 import io.github.trainb0y.tilerpg.terrain.TerrainHandler
+import io.github.trainb0y.tilerpg.terrain.TilePosition
 import kotlin.math.roundToInt
 
 object ChunkLoader {
@@ -35,10 +35,11 @@ object ChunkLoader {
 
 		// Load visible chunks
 		val newChunks = mutableMapOf<TilePosition, Chunk>()
-		for (x in minPos.x.toInt()..maxPos.x.toInt() step TerrainHandler.chunkSize) {
-			for (y in minPos.y.toInt()..maxPos.y.toInt() step TerrainHandler.chunkSize) {
+		for (x in minPos.x..maxPos.x step TerrainHandler.chunkSize) {
+			for (y in minPos.y..maxPos.y step TerrainHandler.chunkSize) {
 				// All of these should be loaded
-				newChunks[TilePosition(x,y).chunkOrigin] = TerrainHandler.getChunk(TilePosition(x, y), true)!! // Force will create/load it for us
+				newChunks[TilePosition(x, y).chunkOrigin] =
+					TerrainHandler.getChunk(TilePosition(x, y), true)!! // Force will create/load it for us
 			}
 		}
 		TerrainHandler.chunks = newChunks
