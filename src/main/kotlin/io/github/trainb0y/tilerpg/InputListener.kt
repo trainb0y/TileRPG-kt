@@ -19,11 +19,11 @@ class InputListener : InputProcessor {
 		val pos = TilePosition(cameraPos.x.roundToInt(), cameraPos.y.roundToInt())
 		when (button) {
 			Input.Buttons.RIGHT -> {
-				pos.forceTile = TileData(Tile.SAND)
+				pos.setTile(TileData(Tile.SAND))
 				info {"placed (${pos.x},${pos.y})"}
 			}
 			Input.Buttons.LEFT -> {
-				pos.forceTile = null
+				pos.setTile(null)
 				info {"removed (${pos.x},${pos.y})"}
 			}
 		}

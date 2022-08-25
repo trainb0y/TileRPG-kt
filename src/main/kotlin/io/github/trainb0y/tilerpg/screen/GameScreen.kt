@@ -25,7 +25,6 @@ class GameScreen(worldId: String) : KtxScreen {
 		val camera = OrthographicCamera(80f, 60f)
 	}
 
-	val logger = FPSLogger()
 	val viewport = FillViewport(80f, 60f, camera)
 
 	init {

@@ -27,37 +27,17 @@ data class TilePosition(val x: Int, val y: Int) {
 
 	/**
 	 * The chunk that contains this position
-	 * @see forceChunk
+	 * @see TerrainHandler.getChunk
 	 */
-	val chunk: Chunk?
-		get() = TerrainHandler.getChunk(this, false)
+	fun getChunk(force: Boolean = false) = TerrainHandler.getChunk(this, force)
 
 	/**
-	 * The chunk that contains this position
-	 * Creates/loads it if it is not currently loaded
-	 * @see chunk
+	 * @see TerrainHandler.getTile
 	 */
-	val forceChunk: Chunk
-		get() = TerrainHandler.getChunk(this, true)!!
+	fun getTile(force: Boolean = false): TileData? = TerrainHandler.getTile(this, force)
 
 	/**
-	 * The tile at this position
-	 * @see forceTile
+	 * @see TerrainHandler.setTile
 	 */
-	var tile: TileData?
-		get() = TerrainHandler.getTile(this, false)
-		set(value) {
-			TerrainHandler.setTile(this, value, false)
-		}
-
-	/**
-	 * The tile at this position.
-	 * Creates/loads the chunk if the chunk is not loaded
-	 * @see tile
-	 */
-	var forceTile: TileData?
-		get() = TerrainHandler.getTile(this, true)
-		set(value) {
-			TerrainHandler.setTile(this, value, true)
-		}
+	fun setTile(data: TileData?, force: Boolean = false) = TerrainHandler.setTile(this, data, force)
 }

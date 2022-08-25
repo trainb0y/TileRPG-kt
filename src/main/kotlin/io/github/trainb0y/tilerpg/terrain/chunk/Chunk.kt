@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import io.github.trainb0y.tilerpg.terrain.TilePosition
 import io.github.trainb0y.tilerpg.terrain.tile.TileData
 
-// Possible concern: Position's values can be floats, so tiles can be placed at floats?
 class Chunk(private val size: Int = 16, val origin: TilePosition) {
 	private val tiles = mutableMapOf<TilePosition, TileData>()
 

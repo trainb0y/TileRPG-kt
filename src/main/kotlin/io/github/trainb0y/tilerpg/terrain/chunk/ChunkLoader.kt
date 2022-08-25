@@ -11,7 +11,6 @@ object ChunkLoader {
 	 * Loads [buffer] hidden chunks in all directions.
 	 * Saves all non-visible chunks to files.
 	 */
-	@Suppress("UnnecessaryVariable")
 	fun loadVisibleChunks(camera: OrthographicCamera, buffer: Int = 0) {
 		val bufferSize = TerrainHandler.chunkSize * buffer
 
@@ -35,7 +34,7 @@ object ChunkLoader {
 		saveChunks(chunksToSave)
 
 		// Load visible chunks
-		var newChunks = mutableMapOf<TilePosition, Chunk>()
+		val newChunks = mutableMapOf<TilePosition, Chunk>()
 		for (x in minPos.x.toInt()..maxPos.x.toInt() step TerrainHandler.chunkSize) {
 			for (y in minPos.y.toInt()..maxPos.y.toInt() step TerrainHandler.chunkSize) {
 				// All of these should be loaded
@@ -49,7 +48,6 @@ object ChunkLoader {
 	 * Save [chunks] to a file
 	 */
 	fun saveChunks(chunks: MutableSet<Chunk>) {
-		val world = TerrainHandler.world!!.id // name of the world, so we know where to save to
 		// Can we do this async?
 		chunks.forEach { chunk ->
 			// Save the chunk to a file
@@ -63,7 +61,6 @@ object ChunkLoader {
 	 */
 	fun loadChunk(pos: TilePosition): Chunk? {
 		val chunkOrigin = pos.chunkOrigin
-		val world = TerrainHandler.world!!.id
 		// TODO
 		return null
 	}

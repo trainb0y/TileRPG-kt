@@ -1,6 +1,7 @@
 package io.github.trainb0y.tilerpg.terrain
 
 import com.badlogic.gdx.utils.Json
+import io.github.trainb0y.tilerpg.terrain.TerrainHandler.world
 import io.github.trainb0y.tilerpg.terrain.chunk.Chunk
 import io.github.trainb0y.tilerpg.terrain.generation.TerrainGenerator
 import io.github.trainb0y.tilerpg.terrain.tile.TileData
@@ -12,7 +13,7 @@ import ktx.json.fromJson
  */
 object TerrainHandler {
 	var chunks = mutableMapOf<TilePosition, Chunk>()
-	val chunkSize = 16
+	const val chunkSize = 16
 	var world: World? = null
 
 	/**
@@ -30,7 +31,7 @@ object TerrainHandler {
 	 * Loads a chunk at [origin] from a file, overwrites any existing tiles
 	 * @return the chunk
 	 */
-	fun loadChunkFromFile(origin: TilePosition): Chunk? {
+	private fun loadChunkFromFile(origin: TilePosition): Chunk? {
 		// This could really use some logging
 		val filename = getChunkFileName(origin)
 		return try {Json().fromJson<Chunk>(filename.toLocalFile())} catch (e: Exception) {null} // This seems dumb
@@ -40,7 +41,7 @@ object TerrainHandler {
 	 * Save the chunk at [origin] to a file
 	 * @return whether an older chunk was overwritten
 	 */
-	fun saveChunkToFile(origin: TilePosition): Boolean{
+	private fun saveChunkToFile(origin: TilePosition): Boolean{
 		val filename = getChunkFileName(origin)
 		println(Json().toJson(getChunk(origin, false)))
 		return false
@@ -74,13 +75,15 @@ object TerrainHandler {
 	/**
 	 * @return the filename for the chunk at [origin]
 	 */
-	fun getChunkFileName(origin: TilePosition): String {
-		return "world-${world!!.id}/chunk-${origin.x}-${origin.y}.chunk"
-	}
+	private fun getChunkFileName(origin: TilePosition) = getWorldDirectory() + "/chunks/chunk-${origin.x}-${origin.y}.chunk"
+
 	/**
 	 * @return the filename for the current world
 	 */
-	fun getWorldFileName(): String {
-		return "world-${world!!.id}/${world!!.id}.world"
-	}
+	private fun getWorldFileName() = getWorldDirectory() + "/${world!!.id}.world"
+
+	/**
+	 * @return the name of the directory for the current world
+	 */
+	private fun getWorldDirectory() = "world-${world!!.id}"
 }
