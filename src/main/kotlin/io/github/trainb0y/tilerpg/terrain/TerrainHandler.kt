@@ -11,7 +11,7 @@ import ktx.json.fromJson
  * Manages the terrain; chunks, tile set methods, etc.
  */
 object TerrainHandler {
-	var chunks = mutableMapOf<Position, Chunk>()
+	var chunks = mutableMapOf<TilePosition, Chunk>()
 	val chunkSize = 16
 	var world: World? = null
 
@@ -19,7 +19,7 @@ object TerrainHandler {
 	 * @return the chunk at [pos]
 	 * @param force whether to load/create the chunk if it isn't currently loaded
 	 */
-	fun getChunk(pos: Position, force: Boolean = false): Chunk? {
+	fun getChunk(pos: TilePosition, force: Boolean = false): Chunk? {
 		val origin = pos.chunkOrigin
 		return chunks[origin] ?: if (force) {
 			loadChunkFromFile(origin) ?: TerrainGenerator.generateChunk(origin)
@@ -30,7 +30,7 @@ object TerrainHandler {
 	 * Loads a chunk at [origin] from a file, overwrites any existing tiles
 	 * @return the chunk
 	 */
-	fun loadChunkFromFile(origin: Position): Chunk? {
+	fun loadChunkFromFile(origin: TilePosition): Chunk? {
 		// This could really use some logging
 		val filename = getChunkFileName(origin)
 		return try {Json().fromJson<Chunk>(filename.toLocalFile())} catch (e: Exception) {null} // This seems dumb
@@ -40,7 +40,7 @@ object TerrainHandler {
 	 * Save the chunk at [origin] to a file
 	 * @return whether an older chunk was overwritten
 	 */
-	fun saveChunkToFile(origin: Position): Boolean{
+	fun saveChunkToFile(origin: TilePosition): Boolean{
 		val filename = getChunkFileName(origin)
 		println(Json().toJson(getChunk(origin, false)))
 		return false
@@ -50,14 +50,14 @@ object TerrainHandler {
 	 * @return the TileData at [pos]
 	 * @param force whether to load/create the chunk if that chunk is not currently loaded
 	 */
-	fun getTile(pos: Position, force: Boolean = false): TileData? = getChunk(pos, force)?.getTile(pos)
+	fun getTile(pos: TilePosition, force: Boolean = false): TileData? = getChunk(pos, force)?.getTile(pos)
 
 	/**
 	 * Set the [tile] at [pos]
 	 * @param force whether to load/create the chunk if it is not currently loaded
 	 * @return whether placing succeeded
 	 */
-	fun setTile(pos: Position, tile: TileData?, force: Boolean = false): Boolean =
+	fun setTile(pos: TilePosition, tile: TileData?, force: Boolean = false): Boolean =
 		getChunk(pos, force)?.setTile(pos, tile) ?: false
 
 	/**
@@ -74,7 +74,7 @@ object TerrainHandler {
 	/**
 	 * @return the filename for the chunk at [origin]
 	 */
-	fun getChunkFileName(origin: Position): String {
+	fun getChunkFileName(origin: TilePosition): String {
 		return "world-${world!!.id}/chunk-${origin.x}-${origin.y}.chunk"
 	}
 	/**

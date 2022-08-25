@@ -1,8 +1,9 @@
 package io.github.trainb0y.tilerpg.terrain.chunk
 
 import com.badlogic.gdx.graphics.OrthographicCamera
-import io.github.trainb0y.tilerpg.terrain.Position
+import io.github.trainb0y.tilerpg.terrain.TilePosition
 import io.github.trainb0y.tilerpg.terrain.TerrainHandler
+import kotlin.math.roundToInt
 
 object ChunkLoader {
 	/**
@@ -14,15 +15,15 @@ object ChunkLoader {
 	fun loadVisibleChunks(camera: OrthographicCamera, buffer: Int = 0) {
 		val bufferSize = TerrainHandler.chunkSize * buffer
 
-		val minPos = Position(
+		val minPos = TilePosition(
 			// Subtracting chunkSize so that visible chunks with non-visible origins are still loaded
-			((camera.position.x - (camera.viewportWidth / 2)) - bufferSize) - TerrainHandler.chunkSize, // this
-			((camera.position.y - (camera.viewportHeight / 2)) - bufferSize) - TerrainHandler.chunkSize // feels
-		).roundToInt()
-		val maxPos = Position(
-			(camera.position.x + (camera.viewportWidth / 2)) + bufferSize, // very
-			(camera.position.y + (camera.viewportHeight / 2)) + bufferSize // bad
-		).roundToInt()
+			((camera.position.x - (camera.viewportWidth / 2f)) - bufferSize).roundToInt() - TerrainHandler.chunkSize, // this
+			((camera.position.y - (camera.viewportHeight / 2f)) - bufferSize).roundToInt() - TerrainHandler.chunkSize // feels
+		)
+		val maxPos = TilePosition(
+			(camera.position.x + (camera.viewportWidth / 2f)).roundToInt() + bufferSize, // very
+			(camera.position.y + (camera.viewportHeight / 2f)).roundToInt() + bufferSize // bad
+		)
 
 		// Save non-visible chunks
 		val chunksToSave = mutableSetOf<Chunk>()
@@ -34,11 +35,11 @@ object ChunkLoader {
 		saveChunks(chunksToSave)
 
 		// Load visible chunks
-		var newChunks = mutableMapOf<Position, Chunk>()
+		var newChunks = mutableMapOf<TilePosition, Chunk>()
 		for (x in minPos.x.toInt()..maxPos.x.toInt() step TerrainHandler.chunkSize) {
 			for (y in minPos.y.toInt()..maxPos.y.toInt() step TerrainHandler.chunkSize) {
 				// All of these should be loaded
-				newChunks[Position(x,y).chunkOrigin] = TerrainHandler.getChunk(Position(x, y), true)!! // Force will create/load it for us
+				newChunks[TilePosition(x,y).chunkOrigin] = TerrainHandler.getChunk(TilePosition(x, y), true)!! // Force will create/load it for us
 			}
 		}
 		TerrainHandler.chunks = newChunks
@@ -60,7 +61,7 @@ object ChunkLoader {
 	/**
 	 * @return the chunk at [pos] loaded from a file, null if it was never saved
 	 */
-	fun loadChunk(pos: Position): Chunk? {
+	fun loadChunk(pos: TilePosition): Chunk? {
 		val chunkOrigin = pos.chunkOrigin
 		val world = TerrainHandler.world!!.id
 		// TODO

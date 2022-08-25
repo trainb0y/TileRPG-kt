@@ -4,11 +4,11 @@ import com.badlogic.gdx.Input
 import com.badlogic.gdx.InputProcessor
 import com.badlogic.gdx.math.Vector3
 import io.github.trainb0y.tilerpg.screen.GameScreen.Companion.camera
-import io.github.trainb0y.tilerpg.terrain.Position
-import io.github.trainb0y.tilerpg.terrain.chunk.ChunkLoader
+import io.github.trainb0y.tilerpg.terrain.TilePosition
 import io.github.trainb0y.tilerpg.terrain.tile.TileData
 import io.github.trainb0y.tilerpg.terrain.tile.Tile
 import ktx.log.info
+import kotlin.math.roundToInt
 
 class InputListener : InputProcessor {
 	override fun keyDown(keycode: Int): Boolean = false
@@ -16,7 +16,7 @@ class InputListener : InputProcessor {
 	override fun keyTyped(character: Char): Boolean = false
 	override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
 		val cameraPos = camera.unproject(Vector3(screenX.toFloat(), screenY.toFloat(),0f))
-		val pos = Position(cameraPos.x, cameraPos.y)
+		val pos = TilePosition(cameraPos.x.roundToInt(), cameraPos.y.roundToInt())
 		when (button) {
 			Input.Buttons.RIGHT -> {
 				pos.forceTile = TileData(Tile.SAND)
