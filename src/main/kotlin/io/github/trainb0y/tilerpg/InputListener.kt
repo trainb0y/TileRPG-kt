@@ -7,6 +7,7 @@ import io.github.trainb0y.tilerpg.screen.GameScreen.Companion.camera
 import io.github.trainb0y.tilerpg.terrain.TilePosition
 import io.github.trainb0y.tilerpg.terrain.tile.Tile
 import io.github.trainb0y.tilerpg.terrain.tile.TileData
+import io.github.trainb0y.tilerpg.terrain.tile.TileLayer
 import ktx.log.info
 import kotlin.math.roundToInt
 
@@ -19,12 +20,12 @@ class InputListener : InputProcessor {
 		val pos = TilePosition(cameraPos.x.roundToInt(), cameraPos.y.roundToInt())
 		when (button) {
 			Input.Buttons.RIGHT -> {
-				pos.setTile(TileData(Tile.SAND))
+				pos.setTile(TileData(Tile.SAND), layer=TileLayer.FOREGROUND)
 				info { "placed (${pos.x},${pos.y})" }
 			}
 
 			Input.Buttons.LEFT -> {
-				pos.setTile(null)
+				pos.setTile(null, layer=TileLayer.FOREGROUND)
 				info { "removed (${pos.x},${pos.y})" }
 			}
 		}

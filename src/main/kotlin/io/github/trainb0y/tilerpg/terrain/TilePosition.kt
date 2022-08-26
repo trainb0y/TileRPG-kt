@@ -2,6 +2,7 @@ package io.github.trainb0y.tilerpg.terrain
 
 import com.badlogic.gdx.math.Vector2
 import io.github.trainb0y.tilerpg.terrain.tile.TileData
+import io.github.trainb0y.tilerpg.terrain.tile.TileLayer
 
 /**
  * Holds an x and y value.
@@ -36,10 +37,10 @@ data class TilePosition(val x: Int, val y: Int) {
 	/**
 	 * @see TerrainHandler.getTile
 	 */
-	fun getTile(force: Boolean = false): TileData? = TerrainHandler.getTile(this, force)
+	fun getTile(force: Boolean = false, layer: TileLayer = TileLayer.BOTH): TileData? = TerrainHandler.getTile(this, force, layer)
 
 	/**
 	 * @see TerrainHandler.setTile
 	 */
-	fun setTile(data: TileData?, force: Boolean = false) = TerrainHandler.setTile(this, data, force)
+	fun setTile(data: TileData?, force: Boolean = false, layer: TileLayer = TileLayer.BOTH) = TerrainHandler.setTile(this, data, force, layer)
 }

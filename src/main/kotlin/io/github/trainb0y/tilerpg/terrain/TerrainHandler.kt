@@ -4,6 +4,7 @@ import com.badlogic.gdx.utils.Json
 import io.github.trainb0y.tilerpg.terrain.chunk.Chunk
 import io.github.trainb0y.tilerpg.terrain.generation.TerrainGenerator
 import io.github.trainb0y.tilerpg.terrain.tile.TileData
+import io.github.trainb0y.tilerpg.terrain.tile.TileLayer
 import ktx.assets.toLocalFile
 import ktx.json.fromJson
 
@@ -30,7 +31,7 @@ object TerrainHandler {
 	 * Loads a chunk at [origin] from a file, overwrites any existing tiles
 	 * @return the chunk
 	 */
-	private fun loadChunkFromFile(origin: TilePosition): Chunk? {
+	fun loadChunkFromFile(origin: TilePosition): Chunk? {
 		// This could really use some logging
 		val filename = getChunkFileName(origin)
 		return try {
@@ -41,12 +42,12 @@ object TerrainHandler {
 	}
 
 	/**
-	 * Save the chunk at [origin] to a file
+	 * Save the [chunk] to a file
 	 * @return whether an older chunk was overwritten
 	 */
-	private fun saveChunkToFile(origin: TilePosition): Boolean {
-		val filename = getChunkFileName(origin)
-		println(Json().toJson(getChunk(origin, false)))
+	fun saveChunkToFile(chunk: Chunk): Boolean {
+		getChunkFileName(chunk)
+		//println(Json().toJson(chunk))
 		return false
 	}
 
@@ -54,15 +55,15 @@ object TerrainHandler {
 	 * @return the TileData at [pos]
 	 * @param force whether to load/create the chunk if that chunk is not currently loaded
 	 */
-	fun getTile(pos: TilePosition, force: Boolean = false): TileData? = getChunk(pos, force)?.getTile(pos)
+	fun getTile(pos: TilePosition, force: Boolean = false, layer: TileLayer = TileLayer.BOTH): TileData? = getChunk(pos, force)?.getTile(pos, layer)
 
 	/**
 	 * Set the [tile] at [pos]
 	 * @param force whether to load/create the chunk if it is not currently loaded
 	 * @return whether placing succeeded
 	 */
-	fun setTile(pos: TilePosition, tile: TileData?, force: Boolean = false): Boolean =
-		getChunk(pos, force)?.setTile(pos, tile) ?: false
+	fun setTile(pos: TilePosition, tile: TileData?, force: Boolean = false, layer: TileLayer = TileLayer.BOTH): Boolean =
+		getChunk(pos, force)?.setTile(pos, tile, layer) ?: false
 
 	/**
 	 * Tries to load world generation values from saved world with [id].
@@ -80,6 +81,12 @@ object TerrainHandler {
 	 */
 	private fun getChunkFileName(origin: TilePosition) =
 		getWorldDirectory() + "/chunks/chunk-${origin.x}-${origin.y}.chunk"
+
+
+	/**
+	 * @return the filename for the [chunk]
+	 */
+	private fun getChunkFileName(chunk: Chunk) = getChunkFileName(chunk.origin)
 
 	/**
 	 * @return the filename for the current world

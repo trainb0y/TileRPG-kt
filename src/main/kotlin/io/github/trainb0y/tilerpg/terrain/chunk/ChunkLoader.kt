@@ -2,6 +2,7 @@ package io.github.trainb0y.tilerpg.terrain.chunk
 
 import com.badlogic.gdx.graphics.OrthographicCamera
 import io.github.trainb0y.tilerpg.terrain.TerrainHandler
+import io.github.trainb0y.tilerpg.terrain.TerrainHandler.saveChunkToFile
 import io.github.trainb0y.tilerpg.terrain.TilePosition
 import kotlin.math.roundToInt
 
@@ -31,7 +32,9 @@ object ChunkLoader {
 				chunksToSave.add(chunk)
 			}
 		}
-		saveChunks(chunksToSave)
+
+		// todo: do this async
+		chunksToSave.forEach{saveChunkToFile(it)}
 
 		// Load visible chunks
 		val newChunks = mutableMapOf<TilePosition, Chunk>()
@@ -43,26 +46,5 @@ object ChunkLoader {
 			}
 		}
 		TerrainHandler.chunks = newChunks
-	}
-
-	/**
-	 * Save [chunks] to a file
-	 */
-	fun saveChunks(chunks: MutableSet<Chunk>) {
-		// Can we do this async?
-		chunks.forEach { chunk ->
-			// Save the chunk to a file
-
-			// TODO
-		}
-	}
-
-	/**
-	 * @return the chunk at [pos] loaded from a file, null if it was never saved
-	 */
-	fun loadChunk(pos: TilePosition): Chunk? {
-		val chunkOrigin = pos.chunkOrigin
-		// TODO
-		return null
 	}
 }

@@ -6,6 +6,7 @@ import io.github.trainb0y.tilerpg.terrain.chunk.Chunk
 import io.github.trainb0y.tilerpg.terrain.noise.OpenSimplex2
 import io.github.trainb0y.tilerpg.terrain.tile.Tile
 import io.github.trainb0y.tilerpg.terrain.tile.TileData
+import io.github.trainb0y.tilerpg.terrain.tile.TileLayer
 
 object TerrainGenerator {
 
@@ -22,9 +23,9 @@ object TerrainGenerator {
 				0.0
 			) * TerrainHandler.world!!.amplitude).toInt() + TerrainHandler.world!!.heightBonus
 			for (y in 0..(maxHeight - origin.y).coerceAtMost(TerrainHandler.chunkSize)) {
-				if (y + 1 > maxHeight - origin.y) chunk.setRelativeTile(TilePosition(x, y), TileData(Tile.GRASS))
-				else if (y + 4 > maxHeight - origin.y) chunk.setRelativeTile(TilePosition(x, y), TileData(Tile.DIRT))
-				else chunk.setRelativeTile(TilePosition(x, y), TileData(Tile.STONE))
+				if (y + 1 > maxHeight - origin.y) chunk.setRelativeTile(TilePosition(x, y), TileData(Tile.GRASS), TileLayer.BOTH)
+				else if (y + 4 > maxHeight - origin.y) chunk.setRelativeTile(TilePosition(x, y), TileData(Tile.DIRT), TileLayer.BOTH)
+				else chunk.setRelativeTile(TilePosition(x, y), TileData(Tile.STONE), TileLayer.BOTH)
 			}
 		}
 		return chunk

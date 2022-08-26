@@ -3,12 +3,19 @@ package io.github.trainb0y.tilerpg.screen
 import com.badlogic.gdx.Application
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
+import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.math.Vector2
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer
+import com.badlogic.gdx.physics.box2d.World
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import io.github.trainb0y.tilerpg.InputListener
+import io.github.trainb0y.tilerpg.PhysicsHandler
 import io.github.trainb0y.tilerpg.terrain.TerrainHandler
 import io.github.trainb0y.tilerpg.terrain.chunk.ChunkLoader
+import io.github.trainb0y.tilerpg.terrain.tile.TileLayer
 import ktx.app.KtxScreen
 import ktx.app.clearScreen
 import ktx.assets.disposeSafely
@@ -18,7 +25,8 @@ import ktx.graphics.use
  * The main game screen
  */
 class GameScreen(worldId: String) : KtxScreen {
-	private val batch = SpriteBatch()
+	private val foregroundBatch = SpriteBatch()
+	private val backgroundBatch = SpriteBatch()
 
 	companion object {
 		val camera = OrthographicCamera(80f, 60f)
@@ -43,7 +51,6 @@ class GameScreen(worldId: String) : KtxScreen {
 	override fun render(delta: Float) {
 		clearScreen(red = 0.5f, green = 0.6f, blue = 1f)
 
-
 		// this whole chunk is concentrated idiocy
 		// delete this asap
 		if (Gdx.input.isKeyPressed(Input.Keys.W)) camera.position.y += 0.55f
@@ -54,10 +61,19 @@ class GameScreen(worldId: String) : KtxScreen {
 		ChunkLoader.loadVisibleChunks(camera, 1)
 
 
-		batch.projectionMatrix = camera.combined
-		batch.use { batch ->
+		// debugRenderer.render(world, camera.combined)
+		backgroundBatch.projectionMatrix = camera.combined
+		backgroundBatch.setColor(0.7f, 0.7f, 0.7f, 1f)
+		backgroundBatch.use { batch ->
 			TerrainHandler.chunks.forEach { (_, chunk) ->
-				chunk.render(batch)
+				chunk.render(batch, TileLayer.BACKGROUND)
+			}
+		}
+
+		foregroundBatch.projectionMatrix = camera.combined
+		foregroundBatch.use { batch ->
+			TerrainHandler.chunks.forEach { (_, chunk) ->
+				chunk.render(batch, TileLayer.FOREGROUND)
 			}
 		}
 		// logger.log()
@@ -65,6 +81,7 @@ class GameScreen(worldId: String) : KtxScreen {
 
 	override fun dispose() {
 		// we aren't disposing of tile images!
-		batch.disposeSafely()
+		foregroundBatch.disposeSafely()
+		backgroundBatch.disposeSafely()
 	}
 }
