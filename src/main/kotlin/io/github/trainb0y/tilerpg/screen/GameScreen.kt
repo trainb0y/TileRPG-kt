@@ -19,6 +19,7 @@ import io.github.trainb0y.tilerpg.terrain.tile.TileLayer
 import ktx.app.KtxScreen
 import ktx.app.clearScreen
 import ktx.assets.disposeSafely
+import ktx.box2d.createWorld
 import ktx.graphics.use
 
 /**
@@ -27,6 +28,8 @@ import ktx.graphics.use
 class GameScreen(worldId: String) : KtxScreen {
 	private val foregroundBatch = SpriteBatch()
 	private val backgroundBatch = SpriteBatch()
+	var b2dworld: World
+	var debugRenderer: Box2DDebugRenderer
 
 	companion object {
 		val camera = OrthographicCamera(80f, 60f)
@@ -37,9 +40,9 @@ class GameScreen(worldId: String) : KtxScreen {
 	init {
 		Gdx.app.logLevel = Application.LOG_DEBUG
 		Gdx.input.inputProcessor = InputListener()
-
+		b2dworld = createWorld(gravity = Vector2(0f, -0.5f))
 		viewport.unitsPerPixel = 0.1f // view scaling more or less
-
+		debugRenderer = Box2DDebugRenderer(true, true, true, true, true, true)
 		TerrainHandler.loadWorld(worldId)
 	}
 
@@ -49,6 +52,7 @@ class GameScreen(worldId: String) : KtxScreen {
 
 
 	override fun render(delta: Float) {
+		PhysicsHandler.doPhysicsStep(b2dworld, delta)
 		clearScreen(red = 0.5f, green = 0.6f, blue = 1f)
 
 		// this whole chunk is concentrated idiocy
