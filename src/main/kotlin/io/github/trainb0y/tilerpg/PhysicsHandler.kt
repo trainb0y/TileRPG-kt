@@ -1,14 +1,21 @@
 package io.github.trainb0y.tilerpg
 
+import com.badlogic.gdx.math.Vector2
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer
 import com.badlogic.gdx.physics.box2d.World
 
-object PhysicsHandler {
-	const val TIME_STEP = 1 / 60f
-	const val POS_ITER = 2
-	const val VEL_ITER = 6
-	private var accumulator = 0f
+class PhysicsHandler {
+	companion object {
+		const val TIME_STEP = 1 / 60f
+		const val POS_ITER = 2
+		const val VEL_ITER = 6
+		private var accumulator = 0f
+	}
 
-	fun doPhysicsStep(world: World, deltaTime: Float) {
+	var world: World = World(Vector2(0f,-9f), true);
+	val debugRenderer = Box2DDebugRenderer(true, true, true, true, true, true)
+
+	fun doPhysicsStep(deltaTime: Float) {
 		// fixed time step
 		// max frame time to avoid spiral of death (on slow devices)
 		val frameTime = deltaTime.coerceAtMost(0.25f)

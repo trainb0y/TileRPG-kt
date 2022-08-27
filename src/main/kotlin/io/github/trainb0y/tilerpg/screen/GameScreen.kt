@@ -28,11 +28,10 @@ import ktx.graphics.use
 class GameScreen(worldId: String) : KtxScreen {
 	private val foregroundBatch = SpriteBatch()
 	private val backgroundBatch = SpriteBatch()
-	var b2dworld: World
-	var debugRenderer: Box2DDebugRenderer
 
 	companion object {
 		val camera = OrthographicCamera(80f, 60f)
+		val physics = PhysicsHandler()
 	}
 
 	val viewport = ScreenViewport(camera)
@@ -40,9 +39,7 @@ class GameScreen(worldId: String) : KtxScreen {
 	init {
 		Gdx.app.logLevel = Application.LOG_DEBUG
 		Gdx.input.inputProcessor = InputListener()
-		b2dworld = createWorld(gravity = Vector2(0f, -0.5f))
-		viewport.unitsPerPixel = 0.1f // view scaling more or less
-		debugRenderer = Box2DDebugRenderer(true, true, true, true, true, true)
+		viewport.unitsPerPixel = 0.06f // view scaling more or less
 		TerrainHandler.loadWorld(worldId)
 	}
 
@@ -52,8 +49,7 @@ class GameScreen(worldId: String) : KtxScreen {
 
 
 	override fun render(delta: Float) {
-		PhysicsHandler.doPhysicsStep(b2dworld, delta)
-		clearScreen(red = 0.5f, green = 0.6f, blue = 1f)
+		physics.doPhysicsStep(delta)
 
 		// this whole chunk is concentrated idiocy
 		// delete this asap
@@ -64,6 +60,12 @@ class GameScreen(worldId: String) : KtxScreen {
 		camera.update() // bad idea lol
 		ChunkLoader.loadVisibleChunks(camera, 1)
 
+		if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+			clearScreen(red = 0.1f, green = 0.1f, blue = 0.3f)
+			physics.debugRenderer.render(physics.world, camera.combined)
+			return
+		}
+		clearScreen(red = 0.5f, green = 0.6f, blue = 1f)
 
 		// debugRenderer.render(world, camera.combined)
 		backgroundBatch.projectionMatrix = camera.combined

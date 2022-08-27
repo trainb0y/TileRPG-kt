@@ -16,18 +16,19 @@ object TerrainGenerator {
 	 */
 	fun generateChunk(origin: TilePosition): Chunk {
 		val chunk = Chunk(TerrainHandler.chunkSize, origin)
-		for (x in 0..TerrainHandler.chunkSize) {
+		for (x in 0 until TerrainHandler.chunkSize) {
 			val maxHeight = (OpenSimplex2.noise2(
 				TerrainHandler.world!!.seed.toLong(),
 				(x + origin.x).toDouble() / TerrainHandler.world!!.wavelength,
 				0.0
 			) * TerrainHandler.world!!.amplitude).toInt() + TerrainHandler.world!!.heightBonus
-			for (y in 0..(maxHeight - origin.y).coerceAtMost(TerrainHandler.chunkSize)) {
+			for (y in 0 until (maxHeight - origin.y).coerceAtMost(TerrainHandler.chunkSize)) {
 				if (y + 1 > maxHeight - origin.y) chunk.setRelativeTile(TilePosition(x, y), TileData(Tile.GRASS), TileLayer.BOTH)
 				else if (y + 4 > maxHeight - origin.y) chunk.setRelativeTile(TilePosition(x, y), TileData(Tile.DIRT), TileLayer.BOTH)
 				else chunk.setRelativeTile(TilePosition(x, y), TileData(Tile.STONE), TileLayer.BOTH)
 			}
 		}
+		chunk.updatePhysicsShape()
 		return chunk
 	}
 }

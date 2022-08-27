@@ -3,7 +3,7 @@ package io.github.trainb0y.tilerpg.terrain
 /**
  * Holds world-specific data
  */
-data class World(
+data class GameWorld(
 	val id: String,
 	val seed: Int,
 	val amplitude: Int,

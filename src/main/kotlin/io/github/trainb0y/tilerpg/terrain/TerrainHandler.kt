@@ -14,7 +14,7 @@ import ktx.json.fromJson
 object TerrainHandler {
 	var chunks = mutableMapOf<TilePosition, Chunk>()
 	const val chunkSize = 16
-	var world: World? = null
+	var world: GameWorld? = null
 
 	/**
 	 * @return the chunk at [pos]
@@ -72,7 +72,7 @@ object TerrainHandler {
 	 */
 	fun loadWorld(id: String): Boolean {
 		// TODO()
-		world = World(id, 1111, 10, 40, 20)
+		world = GameWorld(id, 1111, 10, 40, 20)
 		return false
 	}
 
