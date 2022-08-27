@@ -38,26 +38,26 @@ class Chunk(private val size: Int = 16, val origin: TilePosition) {
 			if (foregroundTiles[pos] == null) return@forEach
 			if (foregroundTiles[pos + TilePosition(0, 1)] == null)
 				lines.add(Pair(
-					Vector2(pos.x - 0.5f, pos.y + 0.5f),
-					Vector2(pos.x + 0.5f, pos.y + 0.5f)
+					Vector2(pos.x.toFloat(), pos.y + 1f),
+					Vector2(pos.x + 1f, pos.y + 1f)
 				))
 
 			if (foregroundTiles[pos + TilePosition(0, -1)] == null)
 				lines.add(Pair(
-					Vector2(pos.x - 0.5f, pos.y - 0.5f),
-					Vector2(pos.x + 0.5f, pos.y - 0.5f)
+					Vector2(pos.x.toFloat(), pos.y.toFloat()),
+					Vector2(pos.x + 1f, pos.y.toFloat())
 				))
 
 			if (foregroundTiles[pos + TilePosition(1, 0)] == null)
 				lines.add(Pair(
-					Vector2(pos.x + 0.5f, pos.y - 0.5f),
-					Vector2(pos.x + 0.5f, pos.y + 0.5f)
+					Vector2(pos.x + 1f, pos.y.toFloat()),
+					Vector2(pos.x + 1f, pos.y + 1f)
 				))
 
 			if (foregroundTiles[pos + TilePosition(-1, 0)] == null)
 				lines.add(Pair(
-					Vector2(pos.x - 0.5f, pos.y - 0.5f),
-					Vector2(pos.x - 0.5f, pos.y + 0.5f)
+					Vector2(pos.x.toFloat(), pos.y.toFloat() ),
+					Vector2(pos.x.toFloat(), pos.y + 1f)
 				))
 
 		}
