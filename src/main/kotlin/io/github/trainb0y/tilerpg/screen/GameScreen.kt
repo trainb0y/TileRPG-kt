@@ -1,7 +1,7 @@
 package io.github.trainb0y.tilerpg.screen
 
 import box2dLight.ConeLight
-import box2dLight.PointLight
+import box2dLight.DirectionalLight
 import box2dLight.RayHandler
 import com.badlogic.gdx.Application
 import com.badlogic.gdx.Gdx
@@ -41,8 +41,13 @@ class GameScreen(worldId: String) : KtxScreen {
 		Gdx.input.inputProcessor = InputListener()
 		viewport.unitsPerPixel = 0.06f // view scaling more or less
 
-		rayHandler.setAmbientLight(0f, 0f, 0f, 0.3f);
-		rayHandler.setBlurNum(2);
+		rayHandler.setAmbientLight(0f, 0f, 0f, 0.1f);
+		rayHandler.setBlurNum(3)
+
+		// sunlight
+		val sun = DirectionalLight(rayHandler, 1000, Color(0f, 0f, 0f, 1f), -90f)
+		sun.isSoft = true
+		sun.setSoftnessLength(15f)
 
 		TerrainHandler.loadWorld(worldId)
 	}
