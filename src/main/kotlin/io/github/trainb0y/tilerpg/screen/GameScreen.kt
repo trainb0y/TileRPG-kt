@@ -64,12 +64,8 @@ class GameScreen(worldId: String) : KtxScreen {
 		camera.update() // bad idea lol
 		ChunkLoader.loadVisibleChunks(camera, 1)
 
-		if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-			clearScreen(red = 0.1f, green = 0.1f, blue = 0.3f)
-			physics.debugRenderer.render(physics.world, camera.combined)
-			return
-		}
 		clearScreen(red = 0.5f, green = 0.6f, blue = 1f)
+
 
 		// debugRenderer.render(world, camera.combined)
 		backgroundBatch.projectionMatrix = camera.combined
@@ -91,6 +87,11 @@ class GameScreen(worldId: String) : KtxScreen {
 
 		// todo: only update if physics updated (just render())
 		rayHandler.updateAndRender()
+
+		if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+			physics.debugRenderer.render(physics.world, camera.combined)
+		}
+
 	}
 
 	override fun dispose() {
