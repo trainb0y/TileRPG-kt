@@ -28,6 +28,7 @@ dependencies {
 	implementation("com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop")
 	implementation("com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop")
 	implementation("com.badlogicgames.gdx:gdx-box2d:$gdxVersion")
+	implementation("com.badlogicgames.box2dlights:box2dlights:1.4")
 	implementation("com.badlogicgames.gdx:gdx:$gdxVersion")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")

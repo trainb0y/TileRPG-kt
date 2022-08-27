@@ -2,8 +2,10 @@ package io.github.trainb0y.tilerpg
 
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.InputProcessor
+import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
 import io.github.trainb0y.tilerpg.screen.GameScreen.Companion.camera
+import io.github.trainb0y.tilerpg.screen.GameScreen.Companion.light
 import io.github.trainb0y.tilerpg.terrain.TilePosition
 import io.github.trainb0y.tilerpg.terrain.tile.Tile
 import io.github.trainb0y.tilerpg.terrain.tile.TileData
@@ -34,6 +36,13 @@ class InputListener : InputProcessor {
 
 	override fun touchUp(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean = false
 	override fun touchDragged(screenX: Int, screenY: Int, pointer: Int): Boolean = false
-	override fun mouseMoved(screenX: Int, screenY: Int): Boolean = false
-	override fun scrolled(amountX: Float, amountY: Float): Boolean = false
+	override fun mouseMoved(screenX: Int, screenY: Int): Boolean {
+		val pos = camera.unproject(Vector3(screenX.toFloat(), screenY.toFloat(), 0f))
+		light.position = Vector2(pos.x, pos.y)
+		return false
+	}
+	override fun scrolled(amountX: Float, amountY: Float): Boolean {
+		light.coneDegree += amountY
+		return false
+	}
 }

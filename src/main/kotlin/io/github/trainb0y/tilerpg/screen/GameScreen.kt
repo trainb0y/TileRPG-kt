@@ -1,15 +1,14 @@
 package io.github.trainb0y.tilerpg.screen
 
+import box2dLight.ConeLight
+import box2dLight.PointLight
+import box2dLight.RayHandler
 import com.badlogic.gdx.Application
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
-import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import com.badlogic.gdx.math.Vector2
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer
-import com.badlogic.gdx.physics.box2d.World
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import io.github.trainb0y.tilerpg.InputListener
 import io.github.trainb0y.tilerpg.PhysicsHandler
@@ -19,7 +18,6 @@ import io.github.trainb0y.tilerpg.terrain.tile.TileLayer
 import ktx.app.KtxScreen
 import ktx.app.clearScreen
 import ktx.assets.disposeSafely
-import ktx.box2d.createWorld
 import ktx.graphics.use
 
 /**
@@ -32,6 +30,8 @@ class GameScreen(worldId: String) : KtxScreen {
 	companion object {
 		val camera = OrthographicCamera(80f, 60f)
 		val physics = PhysicsHandler()
+		val rayHandler = RayHandler(physics.world)
+		val light = ConeLight(rayHandler, 100, Color.GOLDENROD, 30f, 10f ,20f, -70f, 23f)
 	}
 
 	val viewport = ScreenViewport(camera)
@@ -40,6 +40,10 @@ class GameScreen(worldId: String) : KtxScreen {
 		Gdx.app.logLevel = Application.LOG_DEBUG
 		Gdx.input.inputProcessor = InputListener()
 		viewport.unitsPerPixel = 0.06f // view scaling more or less
+
+		rayHandler.setAmbientLight(0f, 0f, 0f, 0.3f);
+		rayHandler.setBlurNum(2);
+
 		TerrainHandler.loadWorld(worldId)
 	}
 
@@ -83,11 +87,16 @@ class GameScreen(worldId: String) : KtxScreen {
 			}
 		}
 		// logger.log()
+		rayHandler.setCombinedMatrix(camera)
+
+		// todo: only update if physics updated (just render())
+		rayHandler.updateAndRender()
 	}
 
 	override fun dispose() {
 		// we aren't disposing of tile images!
 		foregroundBatch.disposeSafely()
 		backgroundBatch.disposeSafely()
+		rayHandler.disposeSafely()
 	}
 }
