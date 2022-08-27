@@ -1,6 +1,5 @@
 package io.github.trainb0y.tilerpg.screen
 
-import box2dLight.ConeLight
 import box2dLight.DirectionalLight
 import box2dLight.RayHandler
 import com.badlogic.gdx.Application
@@ -31,7 +30,6 @@ class GameScreen(worldId: String) : KtxScreen {
 		val camera = OrthographicCamera(80f, 60f)
 		val physics = PhysicsHandler()
 		val rayHandler = RayHandler(physics.world)
-		val light = ConeLight(rayHandler, 100, Color.GOLDENROD, 30f, 10f ,20f, -70f, 23f)
 	}
 
 	val viewport = ScreenViewport(camera)
