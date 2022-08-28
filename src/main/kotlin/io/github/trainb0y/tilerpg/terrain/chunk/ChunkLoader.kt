@@ -25,16 +25,6 @@ object ChunkLoader {
 			(camera.position.y + (camera.viewportHeight / 2f)).roundToInt() + bufferSize // bad
 		)
 
-		// Save non-visible chunks
-		val chunksToSave = mutableSetOf<Chunk>()
-		TerrainHandler.chunks.forEach { (pos, chunk) ->
-			if (pos.clampXY(minPos, maxPos) != pos) {
-				chunksToSave.add(chunk)
-			}
-		}
-
-		// todo: do this async
-		chunksToSave.forEach{saveChunkToFile(it)}
 
 		// Load visible chunks
 		val newChunks = mutableMapOf<TilePosition, Chunk>()
@@ -45,6 +35,13 @@ object ChunkLoader {
 					TerrainHandler.getChunk(TilePosition(x, y), true)!! // Force will create/load it for us
 			}
 		}
+
+		// Save old chunks that aren't visible
+		// todo: do it async
+		TerrainHandler.chunks.keys.filter {!newChunks.containsKey(it)}.forEach {
+			saveChunkToFile(TerrainHandler.chunks[it]!!)
+		}
+
 		TerrainHandler.chunks = newChunks
 	}
 }
