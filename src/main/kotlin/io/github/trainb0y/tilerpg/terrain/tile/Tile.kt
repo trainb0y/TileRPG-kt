@@ -9,5 +9,6 @@ enum class Tile(val id: String, val texture: TextureAtlas.AtlasRegion) {
 	STONE("stone", atlas.findRegion("stone")),
 	DIRT("dirt", atlas.findRegion("dirt")),
 	GRASS("grass", atlas.findRegion("grass")),
-	SAND("sand", atlas.findRegion("sand"))
+	SAND("sand", atlas.findRegion("sand")),
+	IRON_ORE("iron-ore", atlas.findRegion("iron-ore"))
 }

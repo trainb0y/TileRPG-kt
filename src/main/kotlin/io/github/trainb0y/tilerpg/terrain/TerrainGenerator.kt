@@ -15,6 +15,7 @@ class TerrainGenerator(val world: WorldData) {
 	fun generateChunk(origin: TilePosition): Chunk {
 		val chunk = Chunk(TerrainHandler.chunkSize, origin)
 		generateBaseTerrain(chunk)
+		generateOres(chunk)
 		carveCaves(chunk)
 		chunk.updatePhysicsShape()
 		return chunk
@@ -48,6 +49,18 @@ class TerrainGenerator(val world: WorldData) {
 		}
 	}
 
+	private fun generateOres(chunk: Chunk) {
+		forEachXY { x, y ->
+			if (chunk.getRelativeTile(TilePosition(x, y), TileLayer.FOREGROUND)?.type != Tile.STONE) return@forEachXY
+			if (OpenSimplex2.noise2(
+					world.seed.toLong() + 1434,
+					(x + chunk.origin.x.toDouble()) / world.oreSize,
+					(y + chunk.origin.y.toDouble()) / world.oreSize
+				) < world.oreCutoff
+			) chunk.setRelativeTile(TilePosition(x, y), TileData(Tile.IRON_ORE, false), TileLayer.BOTH)
+		}
+	}
+
 	private fun carveCaves(chunk: Chunk) {
 		for (x in 0 until TerrainHandler.chunkSize) {
 			// calculate terrain height at this x
@@ -59,10 +72,10 @@ class TerrainGenerator(val world: WorldData) {
 
 			for (y in 0 until (maxHeight - chunk.origin.y).coerceAtMost(TerrainHandler.chunkSize)) {
 				if (OpenSimplex2.noise2(
-						TerrainHandler.world!!.seed.toLong() + 1234,
-						(x + chunk.origin.x.toDouble()) / TerrainHandler.world!!.caveSize,
-						(y + chunk.origin.y.toDouble()) / TerrainHandler.world!!.caveSize
-					) < TerrainHandler.world!!.caveCutoff
+						world.seed.toLong() + 1234,
+						(x + chunk.origin.x.toDouble()) / world.caveSize,
+						(y + chunk.origin.y.toDouble()) / world.caveSize
+					) < world.caveCutoff
 				) chunk.setRelativeTile(TilePosition(x, y), null, TileLayer.FOREGROUND)
 			}
 		}
@@ -71,7 +84,7 @@ class TerrainGenerator(val world: WorldData) {
 	/**
 	 * Call [op] for every x and y in 0 until chunk size
 	 */
-	private fun forEachXY(chunk: Chunk, op: (Int, Int) -> Unit) {
+	private fun forEachXY(op: (Int, Int) -> Unit) {
 		for (x in 0 until TerrainHandler.chunkSize) {
 			for (y in 0 until TerrainHandler.chunkSize) {
 				op(x, y)

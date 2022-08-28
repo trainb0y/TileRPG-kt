@@ -18,23 +18,30 @@ grass
   orig: 8, 8
   offset: 0, 0
   index: -1
-sand
+iron-ore
   rotate: false
   xy: 22, 2
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: -1
-sandstone
+sand
   rotate: false
   xy: 32, 2
   size: 8, 8
   orig: 8, 8
   offset: 0, 0
   index: -1
-stone
+sandstone
   rotate: false
   xy: 42, 2
+  size: 8, 8
+  orig: 8, 8
+  offset: 0, 0
+  index: -1
+stone
+  rotate: false
+  xy: 52, 2
   size: 8, 8
   orig: 8, 8
   offset: 0, 0

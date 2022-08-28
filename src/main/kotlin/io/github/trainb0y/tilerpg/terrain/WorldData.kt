@@ -14,5 +14,9 @@ data class WorldData(
 
 	// caves
 	val caveSize: Float,
-	val caveCutoff: Float
+	val caveCutoff: Float,
+
+	// ore
+	val oreSize: Float,
+	val oreCutoff: Float
 )

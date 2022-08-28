@@ -78,7 +78,7 @@ object TerrainHandler {
 	 */
 	fun loadWorld(id: String): Boolean {
 		// TODO()
-		world = WorldData(id, 1111, 10, 40, 20, 40f, -0.4f)
+		world = WorldData(id, 1111, 10, 40, 20, 40f, -0.4f, 10f, -0.8f)
 		generator = TerrainGenerator(world!!)
 		return false
 	}
