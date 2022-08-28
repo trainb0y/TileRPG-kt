@@ -8,8 +8,11 @@ import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.physics.box2d.Filter
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import io.github.trainb0y.tilerpg.InputListener
+import io.github.trainb0y.tilerpg.LIGHT
+import io.github.trainb0y.tilerpg.SUNLIGHT_BLOCKING
 import io.github.trainb0y.tilerpg.PhysicsHandler
 import io.github.trainb0y.tilerpg.terrain.TerrainHandler
 import io.github.trainb0y.tilerpg.terrain.chunk.ChunkLoader
@@ -45,6 +48,7 @@ class GameScreen(worldId: String) : KtxScreen {
 		// sunlight
 		val sun = DirectionalLight(rayHandler, 1000, Color(0f, 0f, 0f, 1f), -90f)
 		sun.isSoft = true
+		sun.setContactFilter(LIGHT, 0, SUNLIGHT_BLOCKING)
 		sun.setSoftnessLength(15f)
 
 		TerrainHandler.loadWorld(worldId)

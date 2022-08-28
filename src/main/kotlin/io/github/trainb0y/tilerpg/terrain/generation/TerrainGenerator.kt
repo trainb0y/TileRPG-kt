@@ -27,9 +27,9 @@ object TerrainGenerator {
 
 			// Base Materials
 			for (y in 0 until (maxHeight - origin.y).coerceAtMost(TerrainHandler.chunkSize)) {
-				if (y + 2 > maxHeight - origin.y) chunk.setRelativeTile(TilePosition(x, y), TileData(Tile.GRASS), TileLayer.BOTH)
-				else if (y + 5 > maxHeight - origin.y) chunk.setRelativeTile(TilePosition(x, y), TileData(Tile.DIRT), TileLayer.BOTH)
-				else chunk.setRelativeTile(TilePosition(x, y), TileData(Tile.STONE), TileLayer.BOTH)
+				if (y + 2 > maxHeight - origin.y) chunk.setRelativeTile(TilePosition(x, y), TileData(Tile.GRASS, false), TileLayer.BOTH)
+				else if (y + 5 > maxHeight - origin.y) chunk.setRelativeTile(TilePosition(x, y), TileData(Tile.DIRT, false), TileLayer.BOTH)
+				else chunk.setRelativeTile(TilePosition(x, y), TileData(Tile.STONE, false), TileLayer.BOTH)
 
 				// Carve caves
 				if (y < maxHeight - origin.y - 10)

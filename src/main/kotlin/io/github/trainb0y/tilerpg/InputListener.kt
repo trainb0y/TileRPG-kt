@@ -28,6 +28,13 @@ class InputListener : InputProcessor {
 				pos.setTile(null, layer=TileLayer.FOREGROUND)
 				info { "removed (${pos.x},${pos.y})" }
 			}
+
+			Input.Buttons.MIDDLE -> {
+				val tile = pos.getTile(layer = TileLayer.FOREGROUND) ?: return true
+				tile.ignoreSunlight = !tile.ignoreSunlight
+				pos.getChunk()!!.updatePhysicsShape()
+				print(tile.ignoreSunlight)
+			}
 		}
 		return true
 	}

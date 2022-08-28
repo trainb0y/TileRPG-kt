@@ -5,7 +5,9 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.physics.box2d.BodyDef
 import com.badlogic.gdx.physics.box2d.EdgeShape
-import com.badlogic.gdx.physics.box2d.Fixture
+import com.badlogic.gdx.physics.box2d.FixtureDef
+import io.github.trainb0y.tilerpg.LIGHT
+import io.github.trainb0y.tilerpg.SUNLIGHT_BLOCKING
 import io.github.trainb0y.tilerpg.screen.GameScreen.Companion.physics
 import io.github.trainb0y.tilerpg.terrain.TilePosition
 import io.github.trainb0y.tilerpg.terrain.tile.TileData
@@ -15,22 +17,25 @@ import io.github.trainb0y.tilerpg.terrain.tile.TileLayer
 class Chunk(private val size: Int = 16, val origin: TilePosition) {
 	private val foregroundTiles = mutableMapOf<TilePosition, TileData>()
 	private val backgroundTiles = mutableMapOf<TilePosition, TileData>()
-	private val physicsBody : Body
-	var fixtures = mutableSetOf<Fixture>()
+	private var physicsBody : Body
+	private val bodyDef = BodyDef()
 
 	fun toRelativeCoordinates(globalPos: TilePosition): TilePosition = globalPos - origin
 	fun toGlobalCoordinates(relativePos: TilePosition): TilePosition = relativePos + origin
 
 	init {
-		val bodyDef = BodyDef()
 		bodyDef.type = BodyDef.BodyType.StaticBody
 		bodyDef.position.set(origin.x.toFloat(), origin.y.toFloat())
-
 		// add it to the world
 		physicsBody = physics.world.createBody(bodyDef)
+		// it gets deleted and recreated on updatePhysicsStep
 	}
 
 	fun updatePhysicsShape() {
+
+		// recreate it from scratch
+		physics.world.destroyBody(physicsBody)
+		physicsBody = physics.world.createBody(bodyDef)
 
 		val lines = mutableSetOf<Pair<Vector2, Vector2>>()
 
@@ -60,18 +65,23 @@ class Chunk(private val size: Int = 16, val origin: TilePosition) {
 					Vector2(pos.x.toFloat(), pos.y + 1f)
 				))
 
-		}
-		fixtures.forEach { physicsBody.destroyFixture(it) }
-		fixtures.clear()
-		while (lines.isNotEmpty()){
-			val line = lines.first()
-			lines.remove(line)
-			val shape = EdgeShape()
-			shape.set(line.first, line.second)
-			fixtures.add(
-				physicsBody.createFixture(shape , 0f)
-			)
-			shape.dispose()
+			while (lines.isNotEmpty()){
+				val line = lines.first()
+				lines.remove(line)
+				val shape = EdgeShape()
+				shape.set(line.first, line.second)
+				val fix = FixtureDef()
+				fix.shape = shape
+				if (!foregroundTiles[pos]!!.ignoreSunlight) {
+					fix.filter.categoryBits = SUNLIGHT_BLOCKING
+					fix.filter.maskBits = LIGHT
+				}
+
+
+				physicsBody.createFixture(fix)
+				shape.dispose()
+			}
+
 		}
 	}
 
