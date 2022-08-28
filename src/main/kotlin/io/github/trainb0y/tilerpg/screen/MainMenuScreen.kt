@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.utils.viewport.ScreenViewport
+import io.github.trainb0y.tilerpg.entrypoint.TileRPG
 import ktx.app.KtxScreen
 import ktx.app.clearScreen
 import ktx.assets.disposeSafely
@@ -47,6 +48,7 @@ class MainMenuScreen(val game: TileRPG) : KtxScreen {
 	}
 
 	override fun resize(width: Int, height: Int) {
+		// on window resize
 		stage.viewport.update(width, height, true)
 	}
 
@@ -55,7 +57,7 @@ class MainMenuScreen(val game: TileRPG) : KtxScreen {
 			create()
 			init = true
 		}
-		clearScreen(red = 0.9f, green = 0.9f, blue = 0.9f)
+		clearScreen(red = 0.2f, green = 0.2f, blue = 0.2f)
 		// Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT) // Find out what this does!
 		stage.act(Gdx.graphics.deltaTime)
 		stage.draw()

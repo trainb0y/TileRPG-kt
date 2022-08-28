@@ -4,7 +4,7 @@ package io.github.trainb0y.tilerpg
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration
-import io.github.trainb0y.tilerpg.screen.TileRPG
+import io.github.trainb0y.tilerpg.entrypoint.TileRPG
 
 /** Launches the desktop (LWJGL3) application. */
 fun main() {

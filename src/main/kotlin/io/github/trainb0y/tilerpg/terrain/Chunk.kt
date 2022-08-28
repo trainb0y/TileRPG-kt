@@ -6,8 +6,8 @@ import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.physics.box2d.BodyDef
 import com.badlogic.gdx.physics.box2d.EdgeShape
 import com.badlogic.gdx.physics.box2d.FixtureDef
-import io.github.trainb0y.tilerpg.LIGHT
-import io.github.trainb0y.tilerpg.SUNLIGHT_BLOCKING
+import io.github.trainb0y.tilerpg.CollisionMasks.LIGHT
+import io.github.trainb0y.tilerpg.CollisionMasks.SUNLIGHT_BLOCKING
 import io.github.trainb0y.tilerpg.screen.GameScreen.Companion.physics
 import io.github.trainb0y.tilerpg.terrain.TilePosition
 import io.github.trainb0y.tilerpg.terrain.tile.TileData
@@ -17,11 +17,11 @@ import io.github.trainb0y.tilerpg.terrain.tile.TileLayer
 class Chunk(private val size: Int = 16, val origin: TilePosition) {
 	private val foregroundTiles = mutableMapOf<TilePosition, TileData>()
 	private val backgroundTiles = mutableMapOf<TilePosition, TileData>()
-	private var physicsBody : Body
+	private var physicsBody: Body
 	private val bodyDef = BodyDef()
 
-	fun toRelativeCoordinates(globalPos: TilePosition): TilePosition = globalPos - origin
-	fun toGlobalCoordinates(relativePos: TilePosition): TilePosition = relativePos + origin
+	private fun toRelativeCoordinates(globalPos: TilePosition): TilePosition = globalPos - origin
+	private fun toGlobalCoordinates(relativePos: TilePosition): TilePosition = relativePos + origin
 
 	init {
 		bodyDef.type = BodyDef.BodyType.StaticBody
@@ -31,6 +31,10 @@ class Chunk(private val size: Int = 16, val origin: TilePosition) {
 		// it gets deleted and recreated on updatePhysicsStep
 	}
 
+	/**
+	 * Update the physics Body of this chunk with the shape of the tiles it contains.
+	 * Expensive, so don't call it every frame
+	 */
 	fun updatePhysicsShape() {
 
 		// recreate it from scratch
@@ -39,39 +43,53 @@ class Chunk(private val size: Int = 16, val origin: TilePosition) {
 
 		val lines = mutableSetOf<Pair<Vector2, Vector2>>()
 
-		foregroundTiles.keys.forEach {pos ->
-			if (foregroundTiles[pos] == null) return@forEach
+		// Check edges of each tile for null tile
+		// If null is found, make a line segment on that side of the tile
+		foregroundTiles.keys.forEach { pos ->
+			if (foregroundTiles[pos] == null) return@forEach // if there's nothing here, don't bother
 			if (foregroundTiles[pos + TilePosition(0, 1)] == null)
-				lines.add(Pair(
-					Vector2(pos.x.toFloat(), pos.y + 1f),
-					Vector2(pos.x + 1f, pos.y + 1f)
-				))
+				lines.add(
+					Pair(
+						Vector2(pos.x.toFloat(), pos.y + 1f),
+						Vector2(pos.x + 1f, pos.y + 1f)
+					)
+				)
 
 			if (foregroundTiles[pos + TilePosition(0, -1)] == null)
-				lines.add(Pair(
-					Vector2(pos.x.toFloat(), pos.y.toFloat()),
-					Vector2(pos.x + 1f, pos.y.toFloat())
-				))
+				lines.add(
+					Pair(
+						Vector2(pos.x.toFloat(), pos.y.toFloat()),
+						Vector2(pos.x + 1f, pos.y.toFloat())
+					)
+				)
 
 			if (foregroundTiles[pos + TilePosition(1, 0)] == null)
-				lines.add(Pair(
-					Vector2(pos.x + 1f, pos.y.toFloat()),
-					Vector2(pos.x + 1f, pos.y + 1f)
-				))
+				lines.add(
+					Pair(
+						Vector2(pos.x + 1f, pos.y.toFloat()),
+						Vector2(pos.x + 1f, pos.y + 1f)
+					)
+				)
 
 			if (foregroundTiles[pos + TilePosition(-1, 0)] == null)
-				lines.add(Pair(
-					Vector2(pos.x.toFloat(), pos.y.toFloat() ),
-					Vector2(pos.x.toFloat(), pos.y + 1f)
-				))
+				lines.add(
+					Pair(
+						Vector2(pos.x.toFloat(), pos.y.toFloat()),
+						Vector2(pos.x.toFloat(), pos.y + 1f)
+					)
+				)
 
-			while (lines.isNotEmpty()){
+			// Turn all of those "line segments" into Box2D edges
+			while (lines.isNotEmpty()) {
 				val line = lines.first()
 				lines.remove(line)
+
 				val shape = EdgeShape()
 				shape.set(line.first, line.second)
 				val fix = FixtureDef()
 				fix.shape = shape
+
+				// Handle tiles that ignore sunlight
 				if (!foregroundTiles[pos]!!.ignoreSunlight) {
 					fix.filter.categoryBits = SUNLIGHT_BLOCKING
 					fix.filter.maskBits = LIGHT
@@ -112,7 +130,7 @@ class Chunk(private val size: Int = 16, val origin: TilePosition) {
 	 * @see getTile
 	 */
 	fun getRelativeTile(pos: TilePosition, layer: TileLayer): TileData? {
-		if (!containsRelative(pos)) throw  PositionNotInChunkException(this, toGlobalCoordinates(pos))
+		if (!containsRelative(pos)) throw PositionNotInChunkException(this, toGlobalCoordinates(pos))
 		return when (layer) {
 			TileLayer.BACKGROUND -> backgroundTiles[pos]
 			TileLayer.FOREGROUND -> foregroundTiles[pos]
@@ -141,7 +159,7 @@ class Chunk(private val size: Int = 16, val origin: TilePosition) {
 	 * @see setTile
 	 */
 	fun setRelativeTile(pos: TilePosition, tile: TileData?, layer: TileLayer): Boolean {
-		if (!containsRelative(pos)) throw  PositionNotInChunkException(this, toGlobalCoordinates(pos))
+		if (!containsRelative(pos)) throw PositionNotInChunkException(this, toGlobalCoordinates(pos))
 		val tiles = when (layer) {
 			TileLayer.FOREGROUND -> foregroundTiles
 			TileLayer.BACKGROUND -> backgroundTiles
@@ -167,26 +185,39 @@ class Chunk(private val size: Int = 16, val origin: TilePosition) {
 			TileLayer.FOREGROUND -> foregroundTiles.forEach { (pos, tile) ->
 				batch.draw(tile.type.texture, pos.x + origin.x.toFloat(), pos.y + origin.y.toFloat(), 1f, 1f)
 			}
+
 			TileLayer.BACKGROUND -> backgroundTiles.forEach { (pos, tile) ->
 				if (!foregroundTiles.containsKey(pos))  // don't bother rendering if there's foreground here
 					batch.draw(tile.type.texture, pos.x + origin.x.toFloat(), pos.y + origin.y.toFloat(), 1f, 1f)
 			}
+
 			TileLayer.BOTH -> throw InvalidTileLayerException("Can't render both layers at once!")
 		}
 	}
 
+	/**
+	 * Clean up/remove this chunk's various components
+	 */
 	fun unload() {
-		println("no")
 		physics.world.destroyBody(physicsBody)
 	}
 
+	/**
+	 * Save this chunk to [file]
+	 */
 	fun saveToFile(file: String): Boolean {
 		unload()
 		return false
 	}
 }
 
-class InvalidTileLayerException(text: String): Exception(text)
+/**
+ * Thrown when the supplied [TileLayer] is invalid for an operation
+ */
+class InvalidTileLayerException(text: String) : Exception(text)
 
+/**
+ * Thrown when a chunk attempts to operate on a position outside its bounds
+ */
 class PositionNotInChunkException(chunk: Chunk, position: TilePosition) :
 	Exception("Position (${position.x},${position.y}) not is inside the chunk at (${chunk.origin.x},${chunk.origin.y})")

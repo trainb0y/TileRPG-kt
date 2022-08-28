@@ -1,12 +1,13 @@
 package io.github.trainb0y.tilerpg.terrain
 
+import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.utils.Json
 import io.github.trainb0y.tilerpg.terrain.chunk.Chunk
-import io.github.trainb0y.tilerpg.terrain.generation.TerrainGenerator
 import io.github.trainb0y.tilerpg.terrain.tile.TileData
 import io.github.trainb0y.tilerpg.terrain.tile.TileLayer
 import ktx.assets.toLocalFile
 import ktx.json.fromJson
+import kotlin.math.roundToInt
 
 /**
  * Manages the terrain; chunks, tile set methods, etc.
@@ -14,7 +15,8 @@ import ktx.json.fromJson
 object TerrainHandler {
 	var chunks = mutableMapOf<TilePosition, Chunk>()
 	const val chunkSize = 16
-	var world: GameWorld? = null
+	var world: WorldData? = null
+	var generator: TerrainGenerator? = null
 
 	/**
 	 * @return the chunk at [pos]
@@ -23,7 +25,7 @@ object TerrainHandler {
 	fun getChunk(pos: TilePosition, force: Boolean = false): Chunk? {
 		val origin = pos.chunkOrigin
 		return chunks[origin] ?: if (force) {
-			loadChunkFromFile(origin) ?: TerrainGenerator.generateChunk(origin)
+			loadChunkFromFile(origin) ?: generator!!.generateChunk(origin)
 		} else null
 	}
 
@@ -53,14 +55,20 @@ object TerrainHandler {
 	 * @return the TileData at [pos]
 	 * @param force whether to load/create the chunk if that chunk is not currently loaded
 	 */
-	fun getTile(pos: TilePosition, force: Boolean = false, layer: TileLayer = TileLayer.BOTH): TileData? = getChunk(pos, force)?.getTile(pos, layer)
+	fun getTile(pos: TilePosition, force: Boolean = false, layer: TileLayer = TileLayer.BOTH): TileData? =
+		getChunk(pos, force)?.getTile(pos, layer)
 
 	/**
 	 * Set the [tile] at [pos]
 	 * @param force whether to load/create the chunk if it is not currently loaded
 	 * @return whether placing succeeded
 	 */
-	fun setTile(pos: TilePosition, tile: TileData?, force: Boolean = false, layer: TileLayer = TileLayer.BOTH): Boolean =
+	fun setTile(
+		pos: TilePosition,
+		tile: TileData?,
+		force: Boolean = false,
+		layer: TileLayer = TileLayer.BOTH
+	): Boolean =
 		getChunk(pos, force)?.setTile(pos, tile, layer) ?: false
 
 	/**
@@ -70,7 +78,8 @@ object TerrainHandler {
 	 */
 	fun loadWorld(id: String): Boolean {
 		// TODO()
-		world = GameWorld(id, 1111, 10, 40, 20, 40f, -0.4f)
+		world = WorldData(id, 1111, 10, 40, 20, 40f, -0.4f)
+		generator = TerrainGenerator(world!!)
 		return false
 	}
 
@@ -95,4 +104,43 @@ object TerrainHandler {
 	 * @return the name of the directory for the current world
 	 */
 	private fun getWorldDirectory() = "world-${world!!.id}"
+
+	/**
+	 * Attempts to load all chunks visible to [camera] if they aren't already loaded. If they don't exist, create them.
+	 * Loads [buffer] hidden chunks in all directions.
+	 * Saves all non-visible chunks to files.
+	 */
+	fun loadVisibleChunks(camera: OrthographicCamera, buffer: Int = 0) {
+		val bufferSize = chunkSize * buffer
+
+		// find the bounds of the area where chunks should be loaded
+		val minPos = TilePosition(
+			// Subtracting chunkSize so that visible chunks with non-visible origins are still loaded
+			((camera.position.x - (camera.viewportWidth / 2f)) - bufferSize).roundToInt() - chunkSize, // this
+			((camera.position.y - (camera.viewportHeight / 2f)) - bufferSize).roundToInt() - chunkSize // feels
+		)
+		val maxPos = TilePosition(
+			(camera.position.x + (camera.viewportWidth / 2f)).roundToInt() + bufferSize, // very
+			(camera.position.y + (camera.viewportHeight / 2f)).roundToInt() + bufferSize // bad
+		)
+
+
+		// Load visible chunks
+		val newChunks = mutableMapOf<TilePosition, Chunk>()
+		for (x in minPos.x..maxPos.x step chunkSize) {
+			for (y in minPos.y..maxPos.y step chunkSize) {
+				// All of these should be loaded
+				newChunks[TilePosition(x, y).chunkOrigin] =
+					getChunk(TilePosition(x, y), true)!! // Force will create/load it for us
+			}
+		}
+
+		// Save old chunks that aren't visible
+		// todo: do it async
+		chunks.keys.filter { !newChunks.containsKey(it) }.forEach {
+			saveChunkToFile(chunks[it]!!)
+		}
+
+		chunks = newChunks
+	}
 }
