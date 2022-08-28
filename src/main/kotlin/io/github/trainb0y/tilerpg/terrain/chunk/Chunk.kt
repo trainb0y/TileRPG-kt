@@ -174,6 +174,16 @@ class Chunk(private val size: Int = 16, val origin: TilePosition) {
 			TileLayer.BOTH -> throw InvalidTileLayerException("Can't render both layers at once!")
 		}
 	}
+
+	fun unload() {
+		println("no")
+		physics.world.destroyBody(physicsBody)
+	}
+
+	fun saveToFile(file: String): Boolean {
+		unload()
+		return false
+	}
 }
 
 class InvalidTileLayerException(text: String): Exception(text)

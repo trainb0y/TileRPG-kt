@@ -46,9 +46,7 @@ object TerrainHandler {
 	 * @return whether an older chunk was overwritten
 	 */
 	fun saveChunkToFile(chunk: Chunk): Boolean {
-		getChunkFileName(chunk)
-		//println(Json().toJson(chunk))
-		return false
+		return chunk.saveToFile(getChunkFileName(chunk))
 	}
 
 	/**
