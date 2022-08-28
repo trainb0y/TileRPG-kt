@@ -1,4 +1,4 @@
-package io.github.trainb0y.tilerpg.terrain.chunk
+package io.github.trainb0y.tilerpg.terrain
 
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.math.Vector2
@@ -10,8 +10,6 @@ import io.github.trainb0y.tilerpg.CollisionMasks.LIGHT
 import io.github.trainb0y.tilerpg.CollisionMasks.SUNLIGHT_BLOCKING
 import io.github.trainb0y.tilerpg.screen.GameScreen.Companion.json
 import io.github.trainb0y.tilerpg.screen.GameScreen.Companion.physics
-import io.github.trainb0y.tilerpg.terrain.ChunkData
-import io.github.trainb0y.tilerpg.terrain.TilePosition
 import io.github.trainb0y.tilerpg.terrain.tile.TileData
 import io.github.trainb0y.tilerpg.terrain.tile.TileLayer
 import kotlinx.serialization.ExperimentalSerializationApi

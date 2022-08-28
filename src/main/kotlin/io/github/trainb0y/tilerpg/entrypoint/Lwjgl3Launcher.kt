@@ -1,10 +1,9 @@
 @file:JvmName("Lwjgl3Launcher")
 
-package io.github.trainb0y.tilerpg
+package io.github.trainb0y.tilerpg.entrypoint
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration
-import io.github.trainb0y.tilerpg.entrypoint.TileRPG
 
 /** Launches the desktop (LWJGL3) application. */
 fun main() {

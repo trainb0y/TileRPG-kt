@@ -1,6 +1,5 @@
 package io.github.trainb0y.tilerpg.terrain
 
-import io.github.trainb0y.tilerpg.terrain.chunk.Chunk
 import io.github.trainb0y.tilerpg.terrain.noise.OpenSimplex2
 import io.github.trainb0y.tilerpg.terrain.tile.Tile
 import io.github.trainb0y.tilerpg.terrain.tile.TileData

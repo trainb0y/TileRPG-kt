@@ -29,7 +29,7 @@ buildscript {
 java.sourceSets["main"].java.srcDir("assets")
 
 dependencies {
-	setOf("ktx-async", "ktx-app", "ktx-json", "ktx-assets", "ktx-log", "ktx-box2d", "ktx-graphics").forEach{
+	setOf("ktx-async", "ktx-app", "ktx-assets", "ktx-log", "ktx-box2d", "ktx-graphics").forEach{
 		api(group = "io.github.libktx", name = it, version = ktxVersion)
 	}
 	implementation("com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop")
@@ -44,12 +44,12 @@ dependencies {
 	implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0")
 }
 
-application.mainClass.set("io.github.trainb0y.tilerpg.Lwjgl3Launcher")
+application.mainClass.set("io.github.trainb0y.tilerpg.entrypoint.Lwjgl3Launcher")
 
 java.toolchain.languageVersion.set(of(17))
 
 tasks {
-	jar { manifest.attributes("Main-Class" to "io.github.trainb0y.tilerpg.Lwjgl3Launcher") }
+	jar { manifest.attributes("Main-Class" to "io.github.trainb0y.tilerpg.entrypoiht.Lwjgl3Launcher") }
 	shadowJar { archiveFileName.set("../TileRPG.jar") }
 	build { dependsOn("shadowJar") }
 	register("texturePacker") {

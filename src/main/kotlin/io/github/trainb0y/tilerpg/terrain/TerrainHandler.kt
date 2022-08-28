@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.OrthographicCamera
 import io.github.trainb0y.tilerpg.screen.GameScreen.Companion.json
 import io.github.trainb0y.tilerpg.screen.GameScreen.Companion.logger
-import io.github.trainb0y.tilerpg.terrain.chunk.Chunk
 import io.github.trainb0y.tilerpg.terrain.tile.TileData
 import io.github.trainb0y.tilerpg.terrain.tile.TileLayer
 import kotlinx.serialization.ExperimentalSerializationApi
