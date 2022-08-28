@@ -8,10 +8,17 @@ import com.badlogic.gdx.physics.box2d.EdgeShape
 import com.badlogic.gdx.physics.box2d.FixtureDef
 import io.github.trainb0y.tilerpg.CollisionMasks.LIGHT
 import io.github.trainb0y.tilerpg.CollisionMasks.SUNLIGHT_BLOCKING
+import io.github.trainb0y.tilerpg.screen.GameScreen.Companion.json
 import io.github.trainb0y.tilerpg.screen.GameScreen.Companion.physics
+import io.github.trainb0y.tilerpg.terrain.ChunkData
 import io.github.trainb0y.tilerpg.terrain.TilePosition
 import io.github.trainb0y.tilerpg.terrain.tile.TileData
 import io.github.trainb0y.tilerpg.terrain.tile.TileLayer
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.json.encodeToStream
+import java.nio.file.Path
+import kotlin.io.path.createFile
+import kotlin.io.path.outputStream
 
 
 class Chunk(private val size: Int = 16, val origin: TilePosition) {
@@ -205,9 +212,29 @@ class Chunk(private val size: Int = 16, val origin: TilePosition) {
 	/**
 	 * Save this chunk to [file]
 	 */
-	fun saveToFile(file: String): Boolean {
+	@OptIn(ExperimentalSerializationApi::class)
+	fun saveToFile(filepath: Path): Boolean {
 		unload()
-		return false
+
+		val data = ChunkData(foregroundTiles, backgroundTiles)
+
+		val overwritten = filepath.toFile().exists()
+		if (overwritten) filepath.toFile().delete()
+
+		json.encodeToStream(data, filepath.createFile().outputStream())
+
+		return !overwritten
+	}
+
+	/**
+	 * Recreate this chunk from [chunkData]
+	 */
+	fun reconstitute(chunkData: ChunkData) {
+		this.foregroundTiles.clear()
+		this.backgroundTiles.clear()
+		this.foregroundTiles.putAll(chunkData.foregroundTiles)
+		this.backgroundTiles.putAll(chunkData.backgroundTiles)
+		updatePhysicsShape()
 	}
 }
 

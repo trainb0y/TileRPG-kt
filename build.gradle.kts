@@ -9,6 +9,7 @@ plugins {
 	java
 	application
 	kotlin("jvm") version "1.7.10"
+	kotlin("plugin.serialization") version "1.7.10"
 	id("com.github.johnrengelman.shadow") version "7.1.2"
 }
 
@@ -40,6 +41,7 @@ dependencies {
 	implementation("com.badlogicgames.box2dlights:box2dlights:1.4")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+	implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0")
 }
 
 application.mainClass.set("io.github.trainb0y.tilerpg.Lwjgl3Launcher")

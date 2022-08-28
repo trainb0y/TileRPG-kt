@@ -14,10 +14,12 @@ import io.github.trainb0y.tilerpg.InputListener
 import io.github.trainb0y.tilerpg.PhysicsHandler
 import io.github.trainb0y.tilerpg.terrain.TerrainHandler
 import io.github.trainb0y.tilerpg.terrain.tile.TileLayer
+import kotlinx.serialization.json.Json
 import ktx.app.KtxScreen
 import ktx.app.clearScreen
 import ktx.assets.disposeSafely
 import ktx.graphics.use
+import ktx.log.Logger
 
 /**
  * The main game screen
@@ -29,6 +31,11 @@ class GameScreen(worldId: String) : KtxScreen {
 	companion object {
 		val camera = OrthographicCamera(80f, 60f)
 		val physics = PhysicsHandler()
+		val logger = Logger("Game")
+		val json = Json {
+			allowStructuredMapKeys = true
+			prettyPrint = true
+		}
 	}
 
 	private val viewport = ScreenViewport(camera)

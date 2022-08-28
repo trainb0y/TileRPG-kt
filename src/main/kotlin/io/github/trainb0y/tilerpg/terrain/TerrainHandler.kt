@@ -1,12 +1,17 @@
 package io.github.trainb0y.tilerpg.terrain
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.OrthographicCamera
-import com.badlogic.gdx.utils.Json
+import io.github.trainb0y.tilerpg.screen.GameScreen.Companion.json
+import io.github.trainb0y.tilerpg.screen.GameScreen.Companion.logger
 import io.github.trainb0y.tilerpg.terrain.chunk.Chunk
 import io.github.trainb0y.tilerpg.terrain.tile.TileData
 import io.github.trainb0y.tilerpg.terrain.tile.TileLayer
-import ktx.assets.toLocalFile
-import ktx.json.fromJson
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.json.decodeFromStream
+import java.nio.file.Path
+import kotlin.io.path.createDirectories
+import kotlin.io.path.exists
 import kotlin.math.roundToInt
 
 /**
@@ -33,12 +38,17 @@ object TerrainHandler {
 	 * Loads a chunk at [origin] from a file, overwrites any existing tiles
 	 * @return the chunk
 	 */
+	@OptIn(ExperimentalSerializationApi::class)
 	fun loadChunkFromFile(origin: TilePosition): Chunk? {
 		// This could really use some logging
 		val filename = getChunkFileName(origin)
+		if (!filename.exists()) return null
 		return try {
-			Json().fromJson<Chunk>(filename.toLocalFile())
+			val chunk = Chunk(chunkSize, origin)
+			chunk.reconstitute(json.decodeFromStream(filename.toFile().inputStream()))
+			return chunk
 		} catch (e: Exception) {
+			logger.error(e) { "Error loading chunk at ${origin.x}, ${origin.y}" }
 			null
 		} // This seems dumb
 	}
@@ -87,8 +97,7 @@ object TerrainHandler {
 	 * @return the filename for the chunk at [origin]
 	 */
 	private fun getChunkFileName(origin: TilePosition) =
-		getWorldDirectory() + "/chunks/chunk-${origin.x}-${origin.y}.chunk"
-
+		getWorldDirectory().resolve("chunks").createDirectories().resolve("chunk_${origin.x}_${origin.y}.chunk")
 
 	/**
 	 * @return the filename for the [chunk]
@@ -98,12 +107,12 @@ object TerrainHandler {
 	/**
 	 * @return the filename for the current world
 	 */
-	private fun getWorldFileName() = getWorldDirectory() + "/${world!!.id}.world"
+	private fun getWorldFileName() = getWorldDirectory().resolve("${world!!.id}.world")
 
 	/**
 	 * @return the name of the directory for the current world
 	 */
-	private fun getWorldDirectory() = "world-${world!!.id}"
+	private fun getWorldDirectory(): Path = Gdx.files.external("tilerpg/world-${world!!.id}").file().toPath().createDirectories()
 
 	/**
 	 * Attempts to load all chunks visible to [camera] if they aren't already loaded. If they don't exist, create them.
