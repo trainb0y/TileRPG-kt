@@ -18,6 +18,7 @@ import kotlinx.serialization.json.Json
 import ktx.app.KtxScreen
 import ktx.app.clearScreen
 import ktx.assets.disposeSafely
+import ktx.async.KtxAsync
 import ktx.graphics.use
 import ktx.log.Logger
 
@@ -43,6 +44,9 @@ class GameScreen(worldId: String) : KtxScreen {
 	init {
 		Gdx.app.logLevel = Application.LOG_DEBUG
 		Gdx.input.inputProcessor = InputListener()
+
+		KtxAsync.initiate()
+
 		viewport.unitsPerPixel = 0.06f // view scaling more or less
 
 		physics.rayHandler.setAmbientLight(0f, 0f, 0f, 0.1f)
@@ -69,10 +73,11 @@ class GameScreen(worldId: String) : KtxScreen {
 
 		// this whole chunk is concentrated idiocy
 		// delete this asap
-		if (Gdx.input.isKeyPressed(Input.Keys.W)) camera.position.y += 0.55f
-		if (Gdx.input.isKeyPressed(Input.Keys.S)) camera.position.y -= 0.55f
-		if (Gdx.input.isKeyPressed(Input.Keys.A)) camera.position.x -= 0.55f
-		if (Gdx.input.isKeyPressed(Input.Keys.D)) camera.position.x += 0.55f
+		val speed = 4
+		if (Gdx.input.isKeyPressed(Input.Keys.W)) camera.position.y += 0.55f * speed
+		if (Gdx.input.isKeyPressed(Input.Keys.S)) camera.position.y -= 0.55f * speed
+		if (Gdx.input.isKeyPressed(Input.Keys.A)) camera.position.x -= 0.55f * speed
+		if (Gdx.input.isKeyPressed(Input.Keys.D)) camera.position.x += 0.55f * speed
 		camera.update() // bad idea lol
 		TerrainHandler.loadVisibleChunks(camera, 1)
 

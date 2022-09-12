@@ -12,8 +12,13 @@ import io.github.trainb0y.tilerpg.screen.GameScreen.Companion.json
 import io.github.trainb0y.tilerpg.screen.GameScreen.Companion.physics
 import io.github.trainb0y.tilerpg.terrain.tile.TileData
 import io.github.trainb0y.tilerpg.terrain.tile.TileLayer
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.encodeToStream
+import ktx.async.AsyncExecutorDispatcher
+import ktx.async.KtxAsync
+import ktx.async.newSingleThreadAsyncContext
 import java.nio.file.Path
 import kotlin.io.path.createFile
 import kotlin.io.path.outputStream
@@ -219,7 +224,11 @@ class Chunk(private val size: Int = 16, val origin: TilePosition) {
 		val overwritten = filepath.toFile().exists()
 		if (overwritten) filepath.toFile().delete()
 
-		json.encodeToStream(data, filepath.createFile().outputStream())
+		KtxAsync.launch {
+			withContext(TerrainHandler.asyncContext){
+				json.encodeToStream(data, filepath.createFile().outputStream())
+			}
+		}
 
 		return !overwritten
 	}

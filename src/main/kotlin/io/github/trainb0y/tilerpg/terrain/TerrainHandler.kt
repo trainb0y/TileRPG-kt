@@ -8,6 +8,7 @@ import io.github.trainb0y.tilerpg.terrain.tile.TileData
 import io.github.trainb0y.tilerpg.terrain.tile.TileLayer
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.decodeFromStream
+import ktx.async.newAsyncContext
 import java.nio.file.Path
 import kotlin.io.path.createDirectories
 import kotlin.io.path.exists
@@ -21,6 +22,7 @@ object TerrainHandler {
 	const val chunkSize = 16
 	var world: WorldData? = null
 	var generator: TerrainGenerator? = null
+	val asyncContext = newAsyncContext(threads = 4, threadName = "Chunk Save/Load")
 
 	/**
 	 * @return the chunk at [pos]
