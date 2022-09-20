@@ -4,6 +4,9 @@ import box2dLight.RayHandler
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer
 import com.badlogic.gdx.physics.box2d.World
+import io.github.trainb0y.tilerpg.screen.GameScreen
+import io.github.trainb0y.tilerpg.screen.GameScreen.Companion.camera
+import io.github.trainb0y.tilerpg.screen.GameScreen.Companion.physics
 
 class PhysicsHandler {
 	companion object {
@@ -24,7 +27,7 @@ class PhysicsHandler {
 		accumulator += frameTime
 		while (accumulator >= TIME_STEP) {
 			world.step(TIME_STEP, VEL_ITER, POS_ITER)
-			rayHandler.update()
+			camera.position.set(GameScreen.player.position.x, GameScreen.player.position.y, camera.position.z);
 			accumulator -= TIME_STEP
 		}
 	}
